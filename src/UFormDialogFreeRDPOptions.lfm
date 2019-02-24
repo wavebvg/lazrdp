@@ -1,0 +1,507 @@
+object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
+  Left = 349
+  Height = 335
+  Top = 297
+  Width = 289
+  BorderStyle = bsDialog
+  Caption = 'Connection options'
+  ClientHeight = 335
+  ClientWidth = 289
+  LCLVersion = '2.1.0.0'
+  object PageControlFreeRDPOptions: TPageControl
+    Left = 0
+    Height = 254
+    Top = 42
+    Width = 289
+    ActivePage = TabSheetConnection
+    Align = alClient
+    TabIndex = 0
+    TabOrder = 0
+    object TabSheetConnection: TTabSheet
+      Caption = 'Connection'
+      ClientHeight = 221
+      ClientWidth = 283
+      object PanelConnection: TPanel
+        Left = 0
+        Height = 221
+        Top = 0
+        Width = 283
+        Align = alClient
+        ClientHeight = 221
+        ClientWidth = 283
+        TabOrder = 0
+        object PanelUseCustomResolution: TPanel
+          Left = 1
+          Height = 36
+          Top = 145
+          Width = 281
+          Align = alTop
+          BevelOuter = bvNone
+          ClientHeight = 36
+          ClientWidth = 281
+          Enabled = False
+          TabOrder = 0
+          object LabelResolution: TLabel
+            AnchorSideTop.Control = EditResolution
+            AnchorSideTop.Side = asrCenter
+            AnchorSideRight.Control = EditResolution
+            Left = 16
+            Height = 15
+            Top = 13
+            Width = 59
+            Anchors = [akTop, akRight]
+            BorderSpacing.Right = 5
+            Caption = 'Resolution'
+            ParentColor = False
+          end
+          object EditResolution: TTIEdit
+            Left = 80
+            Height = 25
+            Top = 8
+            Width = 187
+            Link.TIPropertyName = 'Resolution'
+            TabOrder = 0
+          end
+        end
+        object PanelUseAuthentication: TPanel
+          Left = 1
+          Height = 61
+          Top = 63
+          Width = 281
+          Align = alTop
+          BevelOuter = bvNone
+          ClientHeight = 61
+          ClientWidth = 281
+          Enabled = False
+          TabOrder = 1
+          object LabelUser: TLabel
+            AnchorSideLeft.Side = asrBottom
+            AnchorSideTop.Control = EditUser
+            AnchorSideTop.Side = asrCenter
+            AnchorSideRight.Control = EditUser
+            Left = 50
+            Height = 15
+            Top = 5
+            Width = 25
+            Anchors = [akTop, akRight]
+            BorderSpacing.Right = 5
+            Caption = 'User'
+            ParentColor = False
+          end
+          object LabelPassword: TLabel
+            AnchorSideTop.Control = EditPassword
+            AnchorSideTop.Side = asrCenter
+            AnchorSideRight.Control = EditPassword
+            Left = 24
+            Height = 15
+            Top = 37
+            Width = 51
+            Anchors = [akTop, akRight]
+            BorderSpacing.Right = 5
+            Caption = 'Password'
+            ParentColor = False
+          end
+          object EditUser: TTIEdit
+            Left = 80
+            Height = 25
+            Top = 0
+            Width = 187
+            Link.TIPropertyName = 'User'
+            TabOrder = 0
+          end
+          object EditPassword: TTIEdit
+            Left = 80
+            Height = 25
+            Top = 32
+            Width = 187
+            EchoMode = emPassword
+            Link.TIPropertyName = 'Password'
+            PasswordChar = '*'
+            TabOrder = 1
+          end
+        end
+        object PanelServer: TPanel
+          Left = 1
+          Height = 41
+          Top = 1
+          Width = 281
+          Align = alTop
+          BevelOuter = bvNone
+          ClientHeight = 41
+          ClientWidth = 281
+          TabOrder = 2
+          object LabelServer: TLabel
+            AnchorSideTop.Control = EditServer
+            AnchorSideTop.Side = asrCenter
+            AnchorSideRight.Control = EditServer
+            Left = 39
+            Height = 15
+            Top = 13
+            Width = 36
+            Anchors = [akTop, akRight]
+            BorderSpacing.Right = 5
+            Caption = 'Server'
+            ParentColor = False
+          end
+          object EditServer: TTIEdit
+            Left = 80
+            Height = 25
+            Top = 8
+            Width = 187
+            Link.TIPropertyName = 'ServerInfo'
+            TabOrder = 0
+          end
+        end
+        object CheckBoxUseAuthentication: TTICheckBox
+          Left = 11
+          Height = 21
+          Top = 42
+          Width = 271
+          Align = alTop
+          AutoSize = True
+          BorderSpacing.Left = 10
+          Caption = 'Use authentication'
+          Link.OnAfterWrite = CheckBoxUseAuthenticationPropertyLinkAfterWrite
+          Link.TIPropertyName = 'UseAuthentication'
+          PropertyNameAsCaption = False
+          TabOrder = 3
+        end
+        object CheckBoxUseResolution: TTICheckBox
+          Left = 11
+          Height = 21
+          Top = 124
+          Width = 271
+          Align = alTop
+          AutoSize = True
+          BorderSpacing.Left = 10
+          Caption = 'Use custom resolution'
+          Link.OnAfterWrite = CheckBoxUseResolutionPropertyLinkAfterWrite
+          Link.TIPropertyName = 'UseCustomResolution'
+          PropertyNameAsCaption = False
+          TabOrder = 4
+        end
+        object CheckBoxClipboard: TTICheckBox
+          Left = 11
+          Height = 21
+          Top = 181
+          Width = 271
+          Align = alTop
+          AutoSize = True
+          BorderSpacing.Left = 10
+          Caption = ' Redirect clipboard'
+          Link.OnAfterWrite = CheckBoxUseResolutionPropertyLinkAfterWrite
+          Link.TIPropertyName = 'Clipboard'
+          PropertyNameAsCaption = False
+          TabOrder = 5
+        end
+      end
+    end
+    object TabSheetSecurity: TTabSheet
+      Caption = 'Security'
+      ClientHeight = 221
+      ClientWidth = 283
+      object PanelSecurity: TPanel
+        Left = 0
+        Height = 40
+        Top = 0
+        Width = 283
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 40
+        ClientWidth = 283
+        TabOrder = 0
+        object ComboBoxSec: TTIComboBox
+          Left = 80
+          Height = 27
+          Top = 8
+          Width = 187
+          HistoryCaseSensitive = False
+          Link.OnAfterWrite = ComboBoxSecPropertyLinkAfterWrite
+          Link.TIPropertyName = 'Sec'
+          MaxHistoryCount = 0
+          OnChange = ComboBoxChange
+          Style = csDropDownList
+          TabOrder = 0
+        end
+        object LabelSec: TLabel
+          AnchorSideTop.Control = ComboBoxSec
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = ComboBoxSec
+          Left = 56
+          Height = 15
+          Top = 14
+          Width = 19
+          Anchors = [akTop, akRight]
+          BorderSpacing.Right = 5
+          Caption = 'Sec'
+          ParentColor = False
+        end
+      end
+      object PanelDisplaySec: TPanel
+        Left = 0
+        Height = 96
+        Top = 40
+        Width = 283
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 96
+        ClientWidth = 283
+        TabOrder = 1
+        object CheckBoxSecExt: TTICheckBox
+          Left = 10
+          Height = 23
+          Top = 0
+          Width = 273
+          Align = alTop
+          BorderSpacing.Left = 10
+          Caption = 'NLA extended protocol'
+          Link.TIPropertyName = 'SecExt'
+          PropertyNameAsCaption = False
+          TabOrder = 0
+        end
+        object CheckBoxSecNLA: TTICheckBox
+          Left = 10
+          Height = 23
+          Top = 23
+          Width = 273
+          Align = alTop
+          BorderSpacing.Left = 10
+          Caption = 'NLA protocol'
+          Link.TIPropertyName = 'SecNLA'
+          PropertyNameAsCaption = False
+          TabOrder = 1
+        end
+        object CheckBoxSecRDP: TTICheckBox
+          Left = 10
+          Height = 23
+          Top = 46
+          Width = 273
+          Align = alTop
+          BorderSpacing.Left = 10
+          Caption = 'RDP protocol'
+          Link.TIPropertyName = 'SecRDP'
+          PropertyNameAsCaption = False
+          TabOrder = 2
+        end
+        object CheckBoxSecTLS: TTICheckBox
+          Left = 10
+          Height = 23
+          Top = 69
+          Width = 273
+          Align = alTop
+          BorderSpacing.Left = 10
+          Caption = 'TLS protocol'
+          Link.TIPropertyName = 'SecTLS'
+          PropertyNameAsCaption = False
+          TabOrder = 3
+        end
+      end
+    end
+    object TabSheetDisplay: TTabSheet
+      Caption = 'Display'
+      ClientHeight = 221
+      ClientWidth = 283
+      object PanelDisplayCodecs: TPanel
+        Left = 0
+        Height = 72
+        Top = 0
+        Width = 283
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 72
+        ClientWidth = 283
+        TabOrder = 0
+        object ComboBoxGDI: TTIComboBox
+          Left = 80
+          Height = 27
+          Top = 8
+          Width = 187
+          HistoryCaseSensitive = False
+          Link.TIPropertyName = 'GDI'
+          MaxHistoryCount = 0
+          OnChange = ComboBoxChange
+          Style = csDropDownList
+          TabOrder = 0
+        end
+        object LabelGDI: TLabel
+          AnchorSideTop.Control = ComboBoxGDI
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = ComboBoxGDI
+          Left = 55
+          Height = 15
+          Top = 14
+          Width = 20
+          Anchors = [akTop, akRight]
+          BorderSpacing.Right = 5
+          Caption = 'GDI'
+          ParentColor = False
+        end
+        object ComboBoxCodecCash: TTIComboBox
+          Left = 80
+          Height = 27
+          Top = 40
+          Width = 187
+          HistoryCaseSensitive = False
+          Link.TIPropertyName = 'CodecCash'
+          MaxHistoryCount = 0
+          OnChange = ComboBoxChange
+          Style = csDropDownList
+          TabOrder = 1
+        end
+        object LabelCodecCash: TLabel
+          AnchorSideTop.Control = ComboBoxCodecCash
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = ComboBoxCodecCash
+          Left = 14
+          Height = 15
+          Top = 46
+          Width = 61
+          Anchors = [akTop, akRight]
+          BorderSpacing.Right = 5
+          Caption = 'Codec cash'
+          ParentColor = False
+        end
+      end
+      object CheckBoxRFX: TTICheckBox
+        Left = 10
+        Height = 21
+        Top = 72
+        Width = 273
+        Align = alTop
+        AutoSize = True
+        BorderSpacing.Left = 10
+        Caption = 'RFX'
+        Link.OnAfterWrite = CheckBoxRFXPropertyLinkAfterWrite
+        Link.TIPropertyName = 'RFX'
+        PropertyNameAsCaption = False
+        TabOrder = 1
+      end
+      object PanelDisplayMode: TPanel
+        Left = 0
+        Height = 40
+        Top = 93
+        Width = 283
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 40
+        ClientWidth = 283
+        Enabled = False
+        TabOrder = 2
+        object ComboBoxRFXMode: TTIComboBox
+          Left = 80
+          Height = 27
+          Top = 6
+          Width = 187
+          HistoryCaseSensitive = False
+          Link.TIPropertyName = 'RFXMode'
+          MaxHistoryCount = 0
+          OnChange = ComboBoxChange
+          Style = csDropDownList
+          TabOrder = 0
+        end
+        object LabelRFXMode: TLabel
+          AnchorSideTop.Control = ComboBoxRFXMode
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = ComboBoxRFXMode
+          Left = 19
+          Height = 15
+          Top = 12
+          Width = 56
+          Anchors = [akTop, akRight]
+          BorderSpacing.Right = 5
+          Caption = 'RFX mode'
+          ParentColor = False
+        end
+      end
+    end
+  end
+  object PanelButtons: TPanel
+    Left = 0
+    Height = 39
+    Top = 296
+    Width = 289
+    Align = alBottom
+    ClientHeight = 39
+    ClientWidth = 289
+    TabOrder = 1
+    object ButtonOk: TButton
+      Left = 128
+      Height = 25
+      Top = 8
+      Width = 75
+      Anchors = [akTop, akRight]
+      Caption = 'Ok'
+      ModalResult = 1
+      TabOrder = 0
+    end
+    object ButtonCancel: TButton
+      Left = 208
+      Height = 25
+      Top = 8
+      Width = 75
+      Anchors = [akTop, akRight]
+      Cancel = True
+      Caption = 'Cancel'
+      ModalResult = 2
+      TabOrder = 1
+    end
+  end
+  object PanelName: TPanel
+    Left = 0
+    Height = 42
+    Top = 0
+    Width = 289
+    Align = alTop
+    ClientHeight = 42
+    ClientWidth = 289
+    TabOrder = 2
+    object EditConnectionName: TTIEdit
+      Left = 47
+      Height = 25
+      Top = 8
+      Width = 234
+      Anchors = [akTop, akLeft, akRight]
+      Link.TIPropertyName = 'ConnectionName'
+      TabOrder = 0
+    end
+    object PanelIcon: TPanel
+      Left = 8
+      Height = 32
+      Top = 5
+      Width = 32
+      ClientHeight = 32
+      ClientWidth = 32
+      TabOrder = 1
+      object ImageIcon: TImage
+        Left = 0
+        Height = 32
+        Top = 0
+        Width = 32
+        OnClick = PanelIconClick
+        PopupMenu = PopupMenuIcon
+        Stretch = True
+        Transparent = True
+      end
+    end
+  end
+  object PropertyLinkMain: TMultiPropertyLink
+    MaintainGrandChilds = False
+    Left = 208
+    Top = 120
+  end
+  object OpenPictureDialog: TOpenPictureDialog
+    Left = 31
+    Top = 152
+  end
+  object PopupMenuIcon: TPopupMenu
+    Left = 83
+    Top = 111
+    object MenuItemSelect: TMenuItem
+      Caption = 'Select'
+    end
+    object MenuItemClear: TMenuItem
+      Caption = 'Clear'
+      OnClick = MenuItemClearClick
+    end
+  end
+end

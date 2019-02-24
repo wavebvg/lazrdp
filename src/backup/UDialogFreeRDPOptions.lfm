@@ -1,0 +1,154 @@
+object DialogFreeRDPOptions: TDialogFreeRDPOptions
+  Left = 550
+  Height = 265
+  Top = 274
+  Width = 280
+  BorderStyle = bsDialog
+  Caption = 'Options'
+  ClientHeight = 265
+  ClientWidth = 280
+  LCLVersion = '2.1.0.0'
+  object PageControlFreeRDPOptions: TPageControl
+    Left = 0
+    Height = 226
+    Top = 0
+    Width = 280
+    ActivePage = TabSheetConnection
+    Align = alClient
+    TabIndex = 0
+    TabOrder = 0
+    object TabSheetConnection: TTabSheet
+      Caption = 'Connection'
+      ClientHeight = 191
+      ClientWidth = 274
+      object LabelServer: TLabel
+        AnchorSideTop.Control = EditServer
+        AnchorSideTop.Side = asrCenter
+        AnchorSideRight.Control = EditServer
+        Left = 46
+        Height = 17
+        Top = 13
+        Width = 37
+        Anchors = [akTop, akRight]
+        BorderSpacing.Right = 5
+        Caption = 'Server'
+        ParentColor = False
+      end
+      object EditServer: TEdit
+        Left = 88
+        Height = 27
+        Top = 8
+        Width = 165
+        TabOrder = 0
+      end
+      object LabelUser: TLabel
+        AnchorSideTop.Control = EditUser
+        AnchorSideTop.Side = asrCenter
+        AnchorSideRight.Control = EditUser
+        Left = 56
+        Height = 17
+        Top = 69
+        Width = 27
+        Anchors = [akTop, akRight]
+        BorderSpacing.Right = 5
+        Caption = 'User'
+        ParentColor = False
+      end
+      object EditUser: TEdit
+        Left = 88
+        Height = 27
+        Top = 64
+        Width = 165
+        TabOrder = 1
+      end
+      object LabelPassword: TLabel
+        AnchorSideTop.Control = EditPassword
+        AnchorSideTop.Side = asrCenter
+        AnchorSideRight.Control = EditPassword
+        Left = 29
+        Height = 17
+        Top = 101
+        Width = 54
+        Anchors = [akTop, akRight]
+        BorderSpacing.Right = 5
+        Caption = 'Password'
+        ParentColor = False
+      end
+      object EditPassword: TEdit
+        Left = 88
+        Height = 27
+        Top = 96
+        Width = 165
+        TabOrder = 2
+      end
+      object CheckBoxUseResolution: TCheckBox
+        Left = 11
+        Height = 21
+        Top = 128
+        Width = 148
+        Caption = 'Use custom resolution'
+        TabOrder = 3
+      end
+      object LabelResolution: TLabel
+        AnchorSideTop.Control = EditResolution
+        AnchorSideTop.Side = asrCenter
+        AnchorSideRight.Control = EditResolution
+        Left = 25
+        Height = 17
+        Top = 157
+        Width = 58
+        Anchors = [akTop, akRight]
+        BorderSpacing.Right = 5
+        Caption = 'Resolution'
+        ParentColor = False
+      end
+      object EditResolution: TEdit
+        Left = 88
+        Height = 27
+        Top = 152
+        Width = 165
+        TabOrder = 4
+      end
+      object CheckBoxAuthentication: TCheckBox
+        Left = 11
+        Height = 21
+        Top = 40
+        Width = 104
+        Caption = 'Authentication'
+        OnChange = CheckBoxAuthenticationChange
+        TabOrder = 5
+      end
+    end
+  end
+  object PanelButtons: TPanel
+    Left = 0
+    Height = 39
+    Top = 226
+    Width = 280
+    Align = alBottom
+    ClientHeight = 39
+    ClientWidth = 280
+    TabOrder = 1
+    object ButtonOk: TButton
+      Left = 119
+      Height = 25
+      Top = 8
+      Width = 75
+      Anchors = [akTop, akRight]
+      Caption = 'Ok'
+      ModalResult = 1
+      TabOrder = 0
+    end
+    object ButtonCancel: TButton
+      Left = 199
+      Height = 25
+      Top = 8
+      Width = 75
+      Anchors = [akTop, akRight]
+      Cancel = True
+      Caption = 'Cancel'
+      ModalResult = 2
+      TabOrder = 1
+    end
+  end
+end
