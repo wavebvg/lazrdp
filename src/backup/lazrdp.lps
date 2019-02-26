@@ -3,7 +3,7 @@
   <ProjectSession>
     <Version Value="11"/>
     <BuildModes Active="Debug"/>
-    <Units Count="165">
+    <Units Count="171">
       <Unit0>
         <Filename Value="lazrdp.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -17,9 +17,10 @@
         <ComponentName Value="MainFormLazRDP"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="417"/>
-        <CursorPos X="20" Y="421"/>
+        <TopLine Value="476"/>
+        <CursorPos X="32" Y="491"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -46,10 +47,11 @@
       <Unit4>
         <Filename Value="UFreeRDPOptions.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="31"/>
-        <CursorPos X="28" Y="46"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="106"/>
+        <CursorPos X="3" Y="106"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="UDialogFreeRDPOptions.pas"/>
@@ -65,10 +67,9 @@
         <ComponentName Value="DMFreeRDP"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="64"/>
-        <CursorPos X="47" Y="76"/>
+        <TopLine Value="25"/>
+        <CursorPos X="14" Y="41"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -82,7 +83,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="33"/>
         <CursorPos X="10" Y="36"/>
-        <UsageCount Value="77"/>
+        <UsageCount Value="79"/>
       </Unit7>
       <Unit8>
         <Filename Value="UDialogFreeRDPPreferences.pas"/>
@@ -90,7 +91,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="45"/>
         <CursorPos Y="56"/>
-        <UsageCount Value="77"/>
+        <UsageCount Value="79"/>
       </Unit8>
       <Unit9>
         <Filename Value="UFrameViewFreeRDP.pas"/>
@@ -101,7 +102,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="19"/>
         <CursorPos X="14" Y="40"/>
-        <UsageCount Value="76"/>
+        <UsageCount Value="78"/>
       </Unit9>
       <Unit10>
         <Filename Value="lib/snowball/src/SnowLibrary.pas"/>
@@ -1238,128 +1239,165 @@
         <CursorPos X="5" Y="243"/>
         <UsageCount Value="10"/>
       </Unit164>
+      <Unit165>
+        <Filename Value="../../../../fpc/lazarus/lcl/extctrls.pp"/>
+        <UnitName Value="ExtCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1383"/>
+        <CursorPos X="18" Y="1389"/>
+        <UsageCount Value="10"/>
+      </Unit165>
+      <Unit166>
+        <Filename Value="../../../../fpc/lazarus/lcl/menus.pp"/>
+        <UnitName Value="Menus"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="110"/>
+        <CursorPos X="17" Y="126"/>
+        <UsageCount Value="10"/>
+      </Unit166>
+      <Unit167>
+        <Filename Value="../../../../fpc/lazarus/lcl/actnlist.pas"/>
+        <UnitName Value="ActnList"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="29"/>
+        <CursorPos X="3" Y="32"/>
+        <UsageCount Value="10"/>
+      </Unit167>
+      <Unit168>
+        <Filename Value="../../../../fpc/src/rtl/objpas/classes/classesh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1961"/>
+        <CursorPos X="14" Y="1976"/>
+        <UsageCount Value="10"/>
+      </Unit168>
+      <Unit169>
+        <Filename Value="../../../../fpc/lazarus/lcl/include/popupmenu.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="26"/>
+        <UsageCount Value="10"/>
+      </Unit169>
+      <Unit170>
+        <Filename Value="../../../../fpc/lazarus/lcl/lcltype.pp"/>
+        <UnitName Value="LCLType"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="114"/>
+        <CursorPos X="26" Y="139"/>
+        <UsageCount Value="10"/>
+      </Unit170>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="28" HistoryIndex="27">
       <Position1>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="63" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="326" TopLine="310"/>
       </Position1>
       <Position2>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="64" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="452" Column="10" TopLine="476"/>
       </Position2>
       <Position3>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="65" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="351" Column="46" TopLine="339"/>
       </Position3>
       <Position4>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="67" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="406" Column="22" TopLine="380"/>
       </Position4>
       <Position5>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="69" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="407" Column="22" TopLine="381"/>
       </Position5>
       <Position6>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="70" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="470" Column="46" TopLine="445"/>
       </Position6>
       <Position7>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="81" TopLine="67"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="40" Column="24" TopLine="24"/>
       </Position7>
       <Position8>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="87" TopLine="66"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="75" Column="34" TopLine="50"/>
       </Position8>
       <Position9>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="86" TopLine="66"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="324" TopLine="320"/>
       </Position9>
       <Position10>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="73" Column="30" TopLine="67"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="342" Column="93" TopLine="329"/>
       </Position10>
       <Position11>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="86" TopLine="66"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="340" Column="42" TopLine="326"/>
       </Position11>
       <Position12>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="74" Column="11" TopLine="67"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="338" Column="31" TopLine="326"/>
       </Position12>
       <Position13>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="86" TopLine="66"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="67" Column="5" TopLine="52"/>
       </Position13>
       <Position14>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="62" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="340" Column="3" TopLine="321"/>
       </Position14>
       <Position15>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="63" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="67" Column="5" TopLine="52"/>
       </Position15>
       <Position16>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="64" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="435" Column="8" TopLine="418"/>
       </Position16>
       <Position17>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="65" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="339" Column="6" TopLine="333"/>
       </Position17>
       <Position18>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="67" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="345" Column="9" TopLine="333"/>
       </Position18>
       <Position19>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="75" TopLine="48"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="339" Column="23" TopLine="334"/>
       </Position19>
       <Position20>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="81" TopLine="67"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="438" Column="3" TopLine="436"/>
       </Position20>
       <Position21>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="87" TopLine="66"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="439" Column="5" TopLine="422"/>
       </Position21>
       <Position22>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="62" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="90" Column="12" TopLine="77"/>
       </Position22>
       <Position23>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="63" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="434" Column="10" TopLine="427"/>
       </Position23>
       <Position24>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="64" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="346" Column="17" TopLine="337"/>
       </Position24>
       <Position25>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="65" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="353" Column="17" TopLine="344"/>
       </Position25>
       <Position26>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="67" TopLine="45"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="363" Column="41" TopLine="344"/>
       </Position26>
       <Position27>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="75" TopLine="48"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="305" Column="56" TopLine="305"/>
       </Position27>
       <Position28>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="76" TopLine="49"/>
+        <Filename Value="UMainFormLazRDP.pas"/>
+        <Caret Line="98" Column="50" TopLine="83"/>
       </Position28>
-      <Position29>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="86" Column="21" TopLine="68"/>
-      </Position29>
-      <Position30>
-        <Filename Value="UDMFreeRDP.pas"/>
-        <Caret Line="58" Column="24" TopLine="42"/>
-      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

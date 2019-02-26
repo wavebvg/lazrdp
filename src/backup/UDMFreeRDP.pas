@@ -9,7 +9,7 @@ uses
   UDialogFreeRDPPreferences,
   UFreeRDPOptions,
   SysUtils,
-  Classes,
+  Classes, ExtCtrls,
   IniFiles;
 
 type
@@ -17,6 +17,7 @@ type
   { TDMFreeRDP }
 
   TDMFreeRDP = class(TDataModule)
+    TrayIcon: TTrayIcon;
   private
     FIniStream: TStream;
     FPreferences: TFreeRDPPreferences;
@@ -54,31 +55,6 @@ uses
 { TDMFreeRDP }
 
 constructor TDMFreeRDP.Create(AOwner: TComponent);
-
-  function TryCreateIni(const AFileName: String): Boolean;
-  var
-    VFileName: String;
-    VHandle: THandle;
-  begin
-    Result := False;
-    VFileName := ExpandFileName(AFileName);
-    if ForceDirectories(ExtractFileDir(VFileName)) then
-    begin
-      if not FileExists(VFileName) then
-      begin
-        VHandle := FileCreate(AFileName, fmCreate, 438);
-        if VHandle = feInvalidHandle then
-          Exit
-        else
-          FileClose(VHandle);
-      end;
-      if FpAccess(VFileName, W_OK) = 0 then
-        FIniFile := TIniFile.Create(VFileName)
-      else
-        Exit;
-      Result := True;
-    end;
-  end;
 
   function TryCreateIni(const AFileName: String): Boolean;
   var

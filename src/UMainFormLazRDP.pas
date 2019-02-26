@@ -33,6 +33,7 @@ type
   { TMainFormLazRDP }
 
   TMainFormLazRDP = class(TForm)
+    ActionConnectionRunAlways: TAction;
     ActionPreferences: TAction;
     ActionToogleDecoration: TAction;
     ActionExit: TAction;
@@ -47,26 +48,32 @@ type
     MainMenu: TMainMenu;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
+    MenuTrayConnections: TMenuItem;
+    MenuTrayPreferences: TMenuItem;
+    MenuTrayExit: TMenuItem;
     MenuItemFile: TMenuItem;
     MenuItemHelp: TMenuItem;
     MenuItemExit: TMenuItem;
     MenuItemFullScreen: TMenuItem;
     MenuItemActions: TMenuItem;
-    MenuItemRun: TMenuItem;
-    MenuItemAdd: TMenuItem;
-    MenuItemEdit: TMenuItem;
-    MenuItemDelete: TMenuItem;
+    MenuConnectionRun: TMenuItem;
+    MenuConnectionAdd: TMenuItem;
+    MenuConnectionEdit: TMenuItem;
+    MenuConnectionDelete: TMenuItem;
     PageControlConnections: TPageControl;
     PanelNormal: TPanel;
     PanelServers: TPanel;
     PanelDisplay: TPanel;
-    PopupMenuOptions: TPopupMenu;
+    PopupMenuTray: TPopupMenu;
+    PopupMenuConnections: TPopupMenu;
     SplitterChannels: TSplitter;
+    TrayIcon: TTrayIcon;
     procedure ActionConnectionAddExecute(Sender: TObject);
     procedure ActionConnectionDeleteExecute(Sender: TObject);
     procedure ActionConnectionDeleteUpdate(Sender: TObject);
     procedure ActionConnectionEditExecute(Sender: TObject);
     procedure ActionConnectionEditUpdate(Sender: TObject);
+    procedure ActionConnectionRunAlwaysExecute(Sender: TObject);
     procedure ActionConnectionRunExecute(Sender: TObject);
     procedure ActionConnectionRunUpdate(Sender: TObject);
     procedure ActionExitExecute(Sender: TObject);
@@ -79,12 +86,16 @@ type
     procedure ListBoxServersDblClick(Sender: TObject);
     procedure PageControlConnectionsChange(Sender: TObject);
     procedure PageControlConnectionsCloseTabClicked(Sender: TObject);
+    procedure PopupMenuTrayClose(Sender: TObject);
+    procedure PopupMenuTrayPopup(Sender: TObject);
   private
+    FInTray: Boolean;
     FIcons: TBooleanDynArray;
     FOldBoundsRect: TRect;
     FApplicationMode: TApplicationMode;
     FOldApplicationException: TExceptionEvent;
     procedure ApplicationException(Sender: TObject; E: Exception);
+    procedure ConnectToFreeRDP(const AOptionIndex: Integer);
     procedure FreeRDPXEnter(Sender: TObject);
     procedure FreeRDPXExit(Sender: TObject);
     function GetActiveFrame: TFrameViewFreeRDP;
@@ -123,6 +134,7 @@ begin
   Application.OnException := @ApplicationException;
 
   UpdateConnectionList(False);
+  TrayIcon.Show;
 end;
 
 destructor TMainFormLazRDP.Destroy;
@@ -290,15 +302,15 @@ begin
   TCustomAction(Sender).Enabled := ListBoxServers.ItemIndex >= 0;
 end;
 
-procedure TMainFormLazRDP.ActionConnectionRunExecute(Sender: TObject);
+procedure TMainFormLazRDP.ConnectToFreeRDP(const AOptionIndex: Integer);
 var
   VNewTab: TTabSheet;
   VView: TFrameViewFreeRDP;
   VOptions: TFreeRDPConnectionOptions;
 begin
   VNewTab := PageControlConnections.AddTabSheet;
-  VOptions := DMFreeRDP.Connections[ListBoxServers.ItemIndex];
   VView := TFrameViewFreeRDP.Create(VNewTab);
+  VOptions := DMFreeRDP.Connections[AOptionIndex];
   VView.FreeRDP.FreeRDPPath := DMFreeRDP.Preferences.FreeRDPPath;
   VView.Align := alClient;
   VView.Options := VOptions;
@@ -306,7 +318,7 @@ begin
   VView.OnXEnter := @FreeRDPXEnter;
   VView.OnXExit := @FreeRDPXExit;
   VNewTab.Caption := VOptions.ConnectionName;
-  if FIcons[ListBoxServers.ItemIndex] then
+  if FIcons[AOptionIndex] then
     VNewTab.ImageIndex := ListBoxServers.ItemIndex
   else
     VNewTab.ImageIndex := -1;
@@ -330,7 +342,25 @@ end;
 
 procedure TMainFormLazRDP.ActionConnectionRunUpdate(Sender: TObject);
 begin
-  TCustomAction(Sender).Enabled := ListBoxServers.ItemIndex >= 0;
+  if FInTray then
+    TCustomAction(Sender).Enabled := True
+  else
+  if Application.Active then
+    if ListBoxServers.Focused then
+      TCustomAction(Sender).Enabled := ListBoxServers.ItemIndex >= 0;
+end;
+
+procedure TMainFormLazRDP.ActionConnectionRunExecute(Sender: TObject);
+begin
+  ConnectToFreeRDP(ListBoxServers.ItemIndex);
+end;
+
+procedure TMainFormLazRDP.ActionConnectionRunAlwaysExecute(Sender: TObject);
+var
+  VMenuItem: TMenuItem;
+begin
+  VMenuItem := TCustomAction(Sender).ActionComponent as TMenuItem;
+  ConnectToFreeRDP(VMenuItem.MenuIndex);
 end;
 
 procedure TMainFormLazRDP.ActionExitExecute(Sender: TObject);
@@ -383,6 +413,7 @@ end;
 
 procedure TMainFormLazRDP.ListBoxServersDblClick(Sender: TObject);
 begin
+  ActionConnectionRun.ActionComponent := Sender as TComponent;
   ActionConnectionRun.Execute;
 end;
 
@@ -397,6 +428,16 @@ begin
     ApplicationMode := amNormal;
   Sender.Free;
   UpdateCaption;
+end;
+
+procedure TMainFormLazRDP.PopupMenuTrayPopup(Sender: TObject);
+begin
+  FInTray := True;
+end;
+
+procedure TMainFormLazRDP.PopupMenuTrayClose(Sender: TObject);
+begin
+  FInTray := False;
 end;
 
 procedure TMainFormLazRDP.UpdateConnectionList(const AUpdated: Boolean);
@@ -414,6 +455,7 @@ var
 
 var
   VOptions: TFreeRDPConnectionOptions;
+  VMenuItem: TMenuItem;
 
 begin
   if AUpdated then
@@ -421,6 +463,8 @@ begin
   ListBoxServers.Items.Assign(DMFreeRDP.Connections);
   SetLength(FIcons, DMFreeRDP.Connections.Count);
   ImageListIcons.Clear;
+  MenuTrayConnections.Clear;
+  MenuTrayConnections.Visible := DMFreeRDP.Connections.Count > 0;
   VPicture := TPicture.Create;
   VBitmap := TBitmap.Create;
   try
@@ -441,6 +485,11 @@ begin
       end
       else
         AddDefault;
+      VMenuItem := TMenuItem.Create(Self);
+      VMenuItem.Caption := DMFreeRDP.Connections[i].ConnectionName;
+      VMenuItem.Action := ActionConnectionRunAlways;
+      VMenuItem.ImageIndex := i;
+      MenuTrayConnections.Add(VMenuItem);
     end;
   finally
     VBitmap.Free;

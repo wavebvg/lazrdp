@@ -9,7 +9,7 @@ uses
   UDialogFreeRDPPreferences,
   UFreeRDPOptions,
   SysUtils,
-  Classes,
+  Classes, ExtCtrls,
   IniFiles;
 
 type
