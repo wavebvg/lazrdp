@@ -106,7 +106,7 @@ procedure TFrameViewFreeRDP.UpdateFreeRDPPosition;
 var
   VLeft, VTop: Integer;
 begin
-  if Options.UseCustomResolution then
+  if Options.UseCustomResolution and not Options.SmartSizing then
   begin
     FreeRDP.Align := alCustom;
     VLeft := Round((Width - FreeRDP.Width) / 2);

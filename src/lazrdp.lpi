@@ -14,6 +14,11 @@
       </XPManifest>
       <Icon Value="0"/>
     </General>
+    <VersionInfo>
+      <UseVersionInfo Value="True"/>
+      <MinorVersionNr Value="1"/>
+      <Attributes pvaDebug="True"/>
+    </VersionInfo>
     <BuildModes Count="3">
       <Item1 Name="Default" Default="True"/>
       <Item2 Name="Debug">
@@ -180,7 +185,7 @@
     </Linking>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="4">
+    <Exceptions Count="5">
       <Item1>
         <Name Value="EAbort"/>
       </Item1>
@@ -193,6 +198,9 @@
       <Item4>
         <Name Value="EPropertyError"/>
       </Item4>
+      <Item5>
+        <Name Value="EFreeRDP"/>
+      </Item5>
     </Exceptions>
   </Debugging>
 </CONFIG>

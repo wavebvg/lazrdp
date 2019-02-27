@@ -27,6 +27,7 @@ type
     CheckBoxUseAuthentication: TTICheckBox;
     CheckBoxUseResolution: TTICheckBox;
     CheckBoxClipboard: TTICheckBox;
+    CheckBoxUseResolution1: TTICheckBox;
     ComboBoxCodecCash: TTIComboBox;
     ComboBoxRFXMode: TTIComboBox;
     ComboBoxSec: TTIComboBox;

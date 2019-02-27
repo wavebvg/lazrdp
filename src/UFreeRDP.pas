@@ -11,6 +11,7 @@ uses
   glib2,
   Forms,
   Xlib,
+  LCLType,
   unixtype,
   x,
   gdk2,
@@ -79,7 +80,9 @@ type
     procedure BindKeyboardListener;
     procedure UnbindKeyboardListener;
     procedure UnGrabTimerTimer(Sender: TObject);
+    procedure UpdateSmartSizing;
   protected
+    procedure Resize; override;
     procedure DestroyHandle; override;
   public
     constructor Create(TheOwner: TComponent); override;
@@ -105,7 +108,7 @@ type
     property Control: TObject read FControl;
   end;
 
-function GetXWindow(const AControl: TWinControl): TWindow;
+function GetXWindow(const AHandle: HWND): TWindow;
 
 implementation
 
@@ -114,7 +117,6 @@ uses
   gtk2,
   gdk2x,
   GTK2Proc,
-  LCLType,
   Gtk2Def,
   gtk2int,
   Graphics,
@@ -155,17 +157,14 @@ type
 
   TFreeRDPFocusThread = class(TThread)
   private
-    FLock: TCriticalSection;
     FStartEvent: TEvent;
     FDisplay: PDisplay;
-    FWindow: TWindow;
-    FControl: TFreeRDP;
+    FControlHandle: HWND;
   protected
     procedure Execute; override;
   public
-    constructor Create(const AControl: TFreeRDP);
+    constructor Create(const AControlHandle: HWND);
     destructor Destroy; override;
-    procedure Terminate;
   end;
 
   { TWSFreeRDP }
@@ -183,12 +182,12 @@ begin
   Result := True;
 end;
 
-function GetXWindow(const AControl: TWinControl): TWindow;
+function GetXWindow(const AHandle: HWND): TWindow;
 var
   VWidget: PGtkWidget;
   VWindow: PGdkWindow;
 begin
-  VWidget := PGtkWidget(AControl.Handle);
+  VWidget := PGtkWidget(AHandle);
   VWindow := VWidget^.window;
   Result := GDK_WINDOW_XWINDOW(VWindow);
 end;
@@ -309,11 +308,10 @@ end;
 
 { TFreeRDPFocusThread }
 
-constructor TFreeRDPFocusThread.Create(const AControl: TFreeRDP);
+constructor TFreeRDPFocusThread.Create(const AControlHandle: HWND);
 begin
   inherited Create(True);
-  FControl := AControl;
-  FLock := TCriticalSection.Create;
+  FControlHandle := AControlHandle;
   FStartEvent := TSimpleEvent.Create;
   Start;
   FStartEvent.WaitFor(INFINITE);
@@ -322,31 +320,7 @@ end;
 destructor TFreeRDPFocusThread.Destroy;
 begin
   FStartEvent.Free;
-  FLock.Free;
   inherited Destroy;
-end;
-
-procedure TFreeRDPFocusThread.Terminate;
-var
-  VDummyEvent: TXClientMessageEvent;
-begin
-  FLock.Enter;
-  try
-    if not Terminated then
-      if GetCurrentThreadId = ThreadID then
-        inherited Terminate
-      else
-      begin
-        FillChar(VDummyEvent, SizeOf(VDummyEvent), 0);
-        VDummyEvent._type := ClientMessage;
-        VDummyEvent.window := FWindow;
-        VDummyEvent.format := 32;
-        XSendEvent(FDisplay, FWindow, 0, 0, PXEvent(@VDummyEvent));
-        XFlush(FDisplay);
-      end;
-  finally
-    FLock.Leave;
-  end;
 end;
 
 procedure TFreeRDPFocusThread.Execute;
@@ -354,70 +328,63 @@ var
   VEvent: TXEvent;
   VOrigWindow: TWindow;
   VMappedWindow: TWindow = 0;
-  VTerminated: Boolean;
 begin
-  VOrigWindow := GetXWindow(FControl);
+  VOrigWindow := GetXWindow(FControlHandle);
   FDisplay := XOpenDisplay(nil);
   try
-    FWindow := XCreateSimpleWindow(FDisplay, VOrigWindow, 10, 10, 10, 10, 0, 0, 0);
-    try
-      XSelectInput(FDisplay, FWindow, StructureNotifyMask);
-      XSelectInput(FDisplay, VOrigWindow, StructureNotifyMask or SubstructureNotifyMask);
-      FillChar(VEvent, SizeOf(VEvent), 0);
-      VTerminated := Terminated;
-      FStartEvent.SetEvent;
-      while not VTerminated do
-      begin
-        XNextEvent(FDisplay, @VEvent);
-        case VEvent._type of
-          ClientMessage:
+    XSelectInput(FDisplay, VOrigWindow, StructureNotifyMask or SubstructureNotifyMask);
+    FillChar(VEvent, SizeOf(VEvent), 0);
+    FStartEvent.SetEvent;
+    while not Terminated do
+    begin
+      XNextEvent(FDisplay, @VEvent);
+      if G_IS_OBJECT(Pointer(FControlHandle)) then
+        Terminate;
+      case VEvent._type of
+        MapNotify:
+        begin
+          WriteLn('MapNotify ', VEvent.xmap.window, ' event ', VEvent.xmap.event);
+          if VMappedWindow = 0 then
           begin
-            Terminate;
-            WriteLn('ClientMessage');
-          end;
-          MapNotify:
-          begin
-            WriteLn('MapNotify ', VEvent.xmap.window, ' event ', VEvent.xmap.event);
-            if VMappedWindow = 0 then
-            begin
-              PostMessage(FControl.Handle, UM_MAP, VEvent.xmap.event, VEvent.xmap.window);
-              XSelectInput(FDisplay, VEvent.xmap.window, EnterWindowMask or LeaveWindowMask);
-              VMappedWindow := VEvent.xmap.window;
-            end;
-          end;
-          UnmapNotify:
-          begin
-            WriteLn('UnmapNotify ', VEvent.xmap.window, ' event ', VEvent.xmap.event);
-            if VMappedWindow = VEvent.xmap.window then
-            begin
-              Terminate;
-              PostMessage(FControl.Handle, UM_UNMAP, VEvent.xmap.event, VEvent.xmap.window);
-            end;
-          end;
-          EnterNotify:
-          begin
-            PostMessage(FControl.Handle, UM_GRAB, 0, VEvent.xcrossing.window);
-            WriteLn('EnterNotify');
-          end;
-          LeaveNotify:
-          begin
-            PostMessage(FControl.Handle, UM_UNGRAB, 0, VEvent.xcrossing.window);
-            WriteLn('LeaveNotify');
+            PostMessage(FControlHandle, UM_MAP, VEvent.xmap.event, VEvent.xmap.window);
+            XSelectInput(FDisplay, VEvent.xmap.window, EnterWindowMask or LeaveWindowMask);
+            VMappedWindow := VEvent.xmap.window;
           end;
         end;
-        FLock.Enter;
-        try
-          VTerminated := Terminated;
-        finally
-          FLock.Leave;
+        DestroyNotify:
+        begin
+          WriteLn('DestroyNotify ', VEvent.xmap.window, ' event ', VEvent.xmap.event);
+          if VMappedWindow = VEvent.xmap.window then
+          begin
+            VMappedWindow := 0;
+            Terminate;
+          end;
+        end;
+        UnmapNotify:
+        begin
+          WriteLn('UnmapNotify ', VEvent.xmap.window, ' event ', VEvent.xmap.event);
+          if VMappedWindow = VEvent.xmap.window then
+          begin
+            if G_IS_OBJECT(Pointer(FControlHandle)) then
+              PostMessage(FControlHandle, UM_UNMAP, VEvent.xmap.event, VEvent.xmap.window);
+          end;
+        end;
+        EnterNotify:
+        begin
+          PostMessage(FControlHandle, UM_GRAB, 0, VEvent.xcrossing.window);
+          WriteLn('EnterNotify');
+        end;
+        LeaveNotify:
+        begin
+          PostMessage(FControlHandle, UM_UNGRAB, 0, VEvent.xcrossing.window);
+          WriteLn('LeaveNotify');
         end;
       end;
-    finally
-      XDestroyWindow(FDisplay, FWindow);
     end;
   finally
     XCloseDisplay(FDisplay);
   end;
+  WriteLn('Terminated');
 end;
 
 function FreeRDPKeyboardEvent(Widget: PGtkWidget; Event: PGdkEvent; Data: gpointer): gboolean; cdecl;
@@ -462,7 +429,6 @@ end;
 
 destructor TFreeRDP.Destroy;
 begin
-  Stop;
   FPressedKeys.Free;
   FOption.Free;
   FOutLines.Free;
@@ -543,17 +509,23 @@ begin
   if FOption = AValue then
     Exit;
   FOption.Assign(AValue);
-  if Options.UseCustomResolution and (Options.Width > 0) and (Options.Height > 0) then
+  if Options.UseCustomResolution and (Options.Width > 0) and (Options.Height > 0) and not Options.SmartSizing then
   begin
     Align := alNone;
     Width := Options.Width;
     Height := Options.Height;
   end
   else
+  begin
     Align := alClient;
+    Width := Parent.Width;
+    Height := Parent.Height;
+  end;
 end;
 
 procedure TFreeRDP.Stop;
+var
+  VDummyEvent: TXClientMessageEvent;
 begin
   if HandleAllocated then
     UnbindKeyboardListener;
@@ -564,7 +536,18 @@ begin
   end;
   if Assigned(FFocusThread) then
   begin
-    TFreeRDPFocusThread(FFocusThread).Terminate;
+    FFocusThread.Terminate;
+    if HandleAllocated then
+    begin
+      FillChar(VDummyEvent, SizeOf(VDummyEvent), 0);
+      VDummyEvent._type := ClientMessage;
+      VDummyEvent.display := gdk_display;
+      VDummyEvent.window := GetXWindow(Handle);
+      VDummyEvent.format := 32;
+      XSendEvent(gdk_display, VDummyEvent.window, 0, SubstructureNotifyMask or SubstructureRedirectMask,
+        PXEvent(@VDummyEvent));
+      XFlush(gdk_display);
+    end;
     FFocusThread.WaitFor;
     FreeAndNil(FFocusThread);
   end;
@@ -587,8 +570,9 @@ begin
     AddParam('/port:%d', [Options.Port]);
   if Options.UseCustomResolution and (Options.Width > 0) and (Options.Height > 0) then
   begin
-    AddParam('/w:%d', [Options.Width]);
-    AddParam('/h:%d', [Options.Height]);
+    AddParam('/size:%s', [Options.Resolution]);
+    if Options.SmartSizing then
+      AddParam('/smart-sizing:%s', [Options.Resolution]);
   end
   else
   begin
@@ -624,9 +608,9 @@ begin
     AddParam('-sec-tls', []);
   if not Options.Clipboard then
     AddParam('-clipboard', []);
-
-  AddParam('/parent-window:%d', [GetXWindow(Self)]);
-  FFocusThread := TFreeRDPFocusThread.Create(Self);
+  AddParam('-grab-keyboard', []);
+  AddParam('/parent-window:%d', [GetXWindow(Handle)]);
+  FFocusThread := TFreeRDPFocusThread.Create(Handle);
   FProcess.Execute;
   ParseOutputResult;
 end;
@@ -715,13 +699,32 @@ begin
   end;
 end;
 
+procedure TFreeRDP.UpdateSmartSizing;
+begin
+  if FXWindow <> 0 then
+    XMoveResizeWindow(gdk_display, FXWindow, 0, 0, Width, Height);
+end;
+
+procedure TFreeRDP.Resize;
+begin
+  inherited Resize;
+  if Options.SmartSizing then
+    UpdateSmartSizing;
+end;
+
 procedure TFreeRDP.UMMap(var AMsg: TLMessage);
 var
   VParams: TXWindowAttributes;
 begin
   FXWindow := AMsg.LParam;
-  if (XGetWindowAttributes(gdk_display, FXWindow, @VParams) <> 0) and Options.UseCustomResolution then
+  if (XGetWindowAttributes(gdk_display, FXWindow, @VParams) <> 0) and Options.UseCustomResolution and
+    not Options.SmartSizing then
+  begin
+    Width := VParams.Width;
     Height := VParams.Height;
+  end;
+  if Options.SmartSizing then
+    UpdateSmartSizing;
 end;
 
 procedure TFreeRDP.UMUnmap(var AMsg: TLMessage);
@@ -758,7 +761,7 @@ end;
 
 procedure TFreeRDP.DestroyHandle;
 begin
-  BindKeyboardListener;
+  Stop;
   inherited DestroyHandle;
 end;
 

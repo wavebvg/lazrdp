@@ -426,6 +426,7 @@ procedure TMainFormLazRDP.PageControlConnectionsCloseTabClicked(Sender: TObject)
 begin
   if ApplicationMode <> amNormal then
     ApplicationMode := amNormal;
+  WriteLn(Sender.ClassName);
   Sender.Free;
   UpdateCaption;
 end;

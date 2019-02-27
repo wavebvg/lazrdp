@@ -59,6 +59,7 @@ type
     FSecTLS: Boolean;
     FServerInfo: String;
     FConnectionName: String;
+    FSmartSizing: Boolean;
     FUseAuthentication: Boolean;
     FWidth: Integer;
     FHeight: Integer;
@@ -96,6 +97,7 @@ type
     property SecRDP: Boolean read FSecRDP write FSecRDP;
     property SecTLS: Boolean read FSecTLS write FSecTLS;
     property Clipboard: Boolean read FClipboard write FClipboard;
+    property SmartSizing: Boolean read FSmartSizing write FSmartSizing;
     
     property ServerInfo: String read GetServerInfo write SetServerInfo;
     property Resolution: String read GetResolution write SetResolution;
@@ -238,6 +240,7 @@ begin
     AIniFile.WriteBool(VSectionName, 'SecRDP', Items[i].SecRDP);
     AIniFile.WriteBool(VSectionName, 'SecTLS', Items[i].SecTLS);
     AIniFile.WriteBool(VSectionName, 'Clipboard', Items[i].Clipboard);
+    AIniFile.WriteBool(VSectionName, 'SmartSizing', Items[i].SmartSizing);
     AIniFile.WriteString(VSectionName, 'IconFileName', Items[i].IconFileName);
   end;
 end;
@@ -284,6 +287,7 @@ begin
         VOptions.SecTLS := AIniFile.ReadBool(VSectionName, 'SecTLS', True);
         VOptions.Clipboard := AIniFile.ReadBool(VSectionName, 'Clipboard', True);
         VOptions.IconFileName := AIniFile.ReadString(VSectionName, 'IconFileName', '');
+        VOptions.SmartSizing := AIniFile.ReadBool(VSectionName, 'SmartSizing', False);
       end;
     end;
   finally
@@ -363,7 +367,7 @@ begin
     SecRDP := VSource.SecRDP;
     SecTLS := VSource.SecTLS;
     Clipboard := VSource.Clipboard;
-    
+    SmartSizing := VSource.SmartSizing;
   end
   else
     inherited Assign(Source);
@@ -433,6 +437,7 @@ end;
 
 procedure TFreeRDPConnectionOptions.Reset;
 begin
+  FSmartSizing := False;
   FClipboard := True;
   FSecExt := False;
   FSecNLA := True;
