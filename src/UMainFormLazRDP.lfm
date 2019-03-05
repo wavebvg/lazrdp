@@ -3,8 +3,9 @@ object MainFormLazRDP: TMainFormLazRDP
   Height = 663
   Top = 106
   Width = 1069
+  ActiveControl = PanelNormal
   Caption = 'LazRDP'
-  ClientHeight = 644
+  ClientHeight = 640
   ClientWidth = 1069
   Icon.Data = {
     3331000000000100010000000000010020001D3100001600000089504E470D0A
@@ -408,26 +409,26 @@ object MainFormLazRDP: TMainFormLazRDP
   Scaled = False
   object PanelNormal: TPanel
     Left = 0
-    Height = 644
+    Height = 640
     Top = 0
     Width = 1069
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 644
+    ClientHeight = 640
     ClientWidth = 1069
     TabOrder = 0
     object PanelServers: TPanel
       Left = 868
-      Height = 644
+      Height = 640
       Top = 0
       Width = 201
       Align = alRight
-      ClientHeight = 644
+      ClientHeight = 640
       ClientWidth = 201
       TabOrder = 0
       object ListBoxServers: TListBox
         Left = 1
-        Height = 642
+        Height = 638
         Top = 1
         Width = 199
         Align = alClient
@@ -441,17 +442,17 @@ object MainFormLazRDP: TMainFormLazRDP
     end
     object PanelDisplay: TPanel
       Left = 0
-      Height = 644
+      Height = 640
       Top = 0
       Width = 863
       Align = alClient
       BevelOuter = bvNone
-      ClientHeight = 644
+      ClientHeight = 640
       ClientWidth = 863
       TabOrder = 1
       object PageControlConnections: TPageControl
         Left = 0
-        Height = 644
+        Height = 640
         Top = 0
         Width = 863
         Align = alClient
@@ -466,7 +467,7 @@ object MainFormLazRDP: TMainFormLazRDP
     end
     object SplitterChannels: TSplitter
       Left = 863
-      Height = 644
+      Height = 640
       Top = 0
       Width = 5
       Align = alRight
@@ -522,11 +523,6 @@ object MainFormLazRDP: TMainFormLazRDP
       OnUpdate = ActionToogleFullScreenUpdate
       ShortCut = 24646
     end
-    object ActionExit: TAction
-      Category = 'File'
-      Caption = 'Exit'
-      OnExecute = ActionExitExecute
-    end
     object ActionToogleDecoration: TAction
       Category = 'Actions'
       Caption = 'Toogle decoration'
@@ -534,15 +530,15 @@ object MainFormLazRDP: TMainFormLazRDP
       OnUpdate = ActionToogleDecorationUpdate
       ShortCut = 24644
     end
+    object ActionExit: TFileExit
+      Category = 'File'
+      Caption = 'В&ыход'
+      Hint = 'Выход'
+    end
     object ActionPreferences: TAction
       Category = 'File'
       Caption = 'Preferences'
       OnExecute = ActionPreferencesExecute
-    end
-    object ActionConnectionRunAlways: TAction
-      Category = 'Connections'
-      Caption = 'Run'
-      OnExecute = ActionConnectionRunAlwaysExecute
     end
   end
   object MainMenu: TMainMenu
@@ -558,7 +554,7 @@ object MainFormLazRDP: TMainFormLazRDP
       end
     end
     object MenuItemActions: TMenuItem
-      Caption = 'Actions'
+      Caption = 'View'
       object MenuItemFullScreen: TMenuItem
         Action = ActionToogleFullScreen
       end
@@ -572,8 +568,6 @@ object MainFormLazRDP: TMainFormLazRDP
   end
   object ImageListIcons: TImageList
     DrawingStyle = dsTransparent
-    Height = 32
-    Width = 32
     Left = 208
     Top = 264
   end
@@ -622,7 +616,6 @@ object MainFormLazRDP: TMainFormLazRDP
     Top = 77
   end
   object PopupMenuTray: TPopupMenu
-    Images = ImageListIcons
     ImagesWidth = 32
     OnPopup = PopupMenuTrayPopup
     OnClose = PopupMenuTrayClose
@@ -630,6 +623,7 @@ object MainFormLazRDP: TMainFormLazRDP
     Top = 102
     object MenuTrayConnections: TMenuItem
       Caption = 'Connections'
+      SubMenuImages = ImageListIcons
     end
     object MenuTrayPreferences: TMenuItem
       Action = ActionPreferences

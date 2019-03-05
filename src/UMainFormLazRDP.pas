@@ -20,7 +20,7 @@ uses
   StdCtrls,
   ComCtrls,
   Menus,
-  ActnList,
+  ActnList, StdActns,
   UFreeRDPOptions,
   UFrameViewFreeRDP,
   UFreeRDP,
@@ -33,16 +33,15 @@ type
   { TMainFormLazRDP }
 
   TMainFormLazRDP = class(TForm)
-    ActionConnectionRunAlways: TAction;
     ActionPreferences: TAction;
     ActionToogleDecoration: TAction;
-    ActionExit: TAction;
     ActionToogleFullScreen: TAction;
     ActionConnectionRun: TAction;
     ActionConnectionAdd: TAction;
     ActionConnectionEdit: TAction;
     ActionConnectionDelete: TAction;
     ActionList: TActionList;
+    ActionExit: TFileExit;
     ImageListIcons: TImageList;
     ListBoxServers: TListBox;
     MainMenu: TMainMenu;
@@ -73,7 +72,7 @@ type
     procedure ActionConnectionDeleteUpdate(Sender: TObject);
     procedure ActionConnectionEditExecute(Sender: TObject);
     procedure ActionConnectionEditUpdate(Sender: TObject);
-    procedure ActionConnectionRunAlwaysExecute(Sender: TObject);
+    procedure MenuItemClick(Sender: TObject);
     procedure ActionConnectionRunExecute(Sender: TObject);
     procedure ActionConnectionRunUpdate(Sender: TObject);
     procedure ActionExitExecute(Sender: TObject);
@@ -355,11 +354,11 @@ begin
   ConnectToFreeRDP(ListBoxServers.ItemIndex);
 end;
 
-procedure TMainFormLazRDP.ActionConnectionRunAlwaysExecute(Sender: TObject);
+procedure TMainFormLazRDP.MenuItemClick(Sender: TObject);
 var
   VMenuItem: TMenuItem;
 begin
-  VMenuItem := TCustomAction(Sender).ActionComponent as TMenuItem;
+  VMenuItem := Sender as TMenuItem;
   ConnectToFreeRDP(VMenuItem.MenuIndex);
 end;
 
@@ -488,8 +487,9 @@ begin
         AddDefault;
       VMenuItem := TMenuItem.Create(Self);
       VMenuItem.Caption := DMFreeRDP.Connections[i].ConnectionName;
-      VMenuItem.Action := ActionConnectionRunAlways;
-      VMenuItem.ImageIndex := i;
+      VMenuItem.OnClick := @MenuItemClick;
+      //VMenuItem.ImageIndex := i;
+      VMenuItem.RadioItem := False;
       MenuTrayConnections.Add(VMenuItem);
     end;
   finally

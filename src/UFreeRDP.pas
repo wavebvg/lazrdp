@@ -338,7 +338,7 @@ begin
     while not Terminated do
     begin
       XNextEvent(FDisplay, @VEvent);
-      if G_IS_OBJECT(Pointer(FControlHandle)) then
+      if not G_IS_OBJECT(Pointer(FControlHandle)) then
         Terminate;
       case VEvent._type of
         MapNotify:
