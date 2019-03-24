@@ -125,8 +125,6 @@ const
 { TFormDialogFreeRDPOptions }
 
 constructor TFormDialogFreeRDPOptions.Create(TheOwner: TComponent);
-var
-  TIObject: TFreeRDPConnectionOptions;
 begin
   inherited Create(TheOwner);
   CreateEnumAliasValues(TypeInfo(TFreeRDPSecOption), ComboBoxSec.Link.AliasValues, SecAliases);
@@ -134,7 +132,6 @@ begin
   CreateEnumAliasValues(TypeInfo(TFreeRDPCodecCashOption), ComboBoxCodecCash.Link.AliasValues, CodecCashAliases);
   CreateEnumAliasValues(TypeInfo(TFreeRDPRFXModeOption), ComboBoxRFXMode.Link.AliasValues, RFXModeAliases);
   FOptions := TFreeRDPConnectionOptions.Create;
-  PropertyLinkMain.TIObject := Options;
 end;
 
 destructor TFormDialogFreeRDPOptions.Destroy;

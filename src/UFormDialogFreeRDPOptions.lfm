@@ -19,26 +19,26 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
     TabOrder = 0
     object TabSheetConnection: TTabSheet
       Caption = 'Connection'
-      ClientHeight = 261
-      ClientWidth = 283
+      ClientHeight = 265
+      ClientWidth = 279
       object PanelConnection: TPanel
         Left = 0
-        Height = 261
+        Height = 265
         Top = 0
-        Width = 283
+        Width = 279
         Align = alClient
-        ClientHeight = 261
-        ClientWidth = 283
+        ClientHeight = 265
+        ClientWidth = 279
         TabOrder = 0
         object PanelUseCustomResolution: TPanel
           Left = 1
           Height = 60
-          Top = 145
-          Width = 281
+          Top = 149
+          Width = 277
           Align = alTop
           BevelOuter = bvNone
           ClientHeight = 60
-          ClientWidth = 281
+          ClientWidth = 277
           Enabled = False
           TabOrder = 0
           object LabelResolution: TLabel
@@ -47,7 +47,7 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
             AnchorSideRight.Control = EditResolution
             Left = 16
             Height = 15
-            Top = 13
+            Top = 14
             Width = 59
             Anchors = [akTop, akRight]
             BorderSpacing.Right = 5
@@ -56,7 +56,7 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
           end
           object EditResolution: TTIEdit
             Left = 80
-            Height = 25
+            Height = 27
             Top = 8
             Width = 187
             Link.TIPropertyName = 'Resolution'
@@ -64,9 +64,9 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
           end
           object CheckBoxUseResolution1: TTICheckBox
             Left = 11
-            Height = 21
+            Height = 23
             Top = 32
-            Width = 111
+            Width = 114
             Align = alCustom
             AutoSize = True
             BorderSpacing.Left = 10
@@ -80,12 +80,12 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
         object PanelUseAuthentication: TPanel
           Left = 1
           Height = 61
-          Top = 63
-          Width = 281
+          Top = 65
+          Width = 277
           Align = alTop
           BevelOuter = bvNone
           ClientHeight = 61
-          ClientWidth = 281
+          ClientWidth = 277
           Enabled = False
           TabOrder = 1
           object LabelUser: TLabel
@@ -95,7 +95,7 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
             AnchorSideRight.Control = EditUser
             Left = 50
             Height = 15
-            Top = 5
+            Top = 6
             Width = 25
             Anchors = [akTop, akRight]
             BorderSpacing.Right = 5
@@ -108,7 +108,7 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
             AnchorSideRight.Control = EditPassword
             Left = 24
             Height = 15
-            Top = 37
+            Top = 38
             Width = 51
             Anchors = [akTop, akRight]
             BorderSpacing.Right = 5
@@ -117,7 +117,7 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
           end
           object EditUser: TTIEdit
             Left = 80
-            Height = 25
+            Height = 27
             Top = 0
             Width = 187
             Link.TIPropertyName = 'User'
@@ -125,7 +125,7 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
           end
           object EditPassword: TTIEdit
             Left = 80
-            Height = 25
+            Height = 27
             Top = 32
             Width = 187
             EchoMode = emPassword
@@ -138,11 +138,11 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
           Left = 1
           Height = 41
           Top = 1
-          Width = 281
+          Width = 277
           Align = alTop
           BevelOuter = bvNone
           ClientHeight = 41
-          ClientWidth = 281
+          ClientWidth = 277
           TabOrder = 2
           object LabelServer: TLabel
             AnchorSideTop.Control = EditServer
@@ -150,7 +150,7 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
             AnchorSideRight.Control = EditServer
             Left = 39
             Height = 15
-            Top = 13
+            Top = 14
             Width = 36
             Anchors = [akTop, akRight]
             BorderSpacing.Right = 5
@@ -159,7 +159,7 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
           end
           object EditServer: TTIEdit
             Left = 80
-            Height = 25
+            Height = 27
             Top = 8
             Width = 187
             Link.TIPropertyName = 'ServerInfo'
@@ -168,9 +168,9 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
         end
         object CheckBoxUseAuthentication: TTICheckBox
           Left = 11
-          Height = 21
+          Height = 23
           Top = 42
-          Width = 271
+          Width = 267
           Align = alTop
           AutoSize = True
           BorderSpacing.Left = 10
@@ -182,9 +182,9 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
         end
         object CheckBoxUseResolution: TTICheckBox
           Left = 11
-          Height = 21
-          Top = 124
-          Width = 271
+          Height = 23
+          Top = 126
+          Width = 267
           Align = alTop
           AutoSize = True
           BorderSpacing.Left = 10
@@ -196,9 +196,9 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
         end
         object CheckBoxClipboard: TTICheckBox
           Left = 11
-          Height = 21
-          Top = 205
-          Width = 271
+          Height = 23
+          Top = 209
+          Width = 267
           Align = alTop
           AutoSize = True
           BorderSpacing.Left = 10
@@ -212,8 +212,8 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
     end
     object TabSheetSecurity: TTabSheet
       Caption = 'Security'
-      ClientHeight = 261
-      ClientWidth = 283
+      ClientHeight = 265
+      ClientWidth = 279
       object PanelSecurity: TPanel
         Left = 0
         Height = 40
@@ -313,8 +313,8 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
     end
     object TabSheetDisplay: TTabSheet
       Caption = 'Display'
-      ClientHeight = 261
-      ClientWidth = 283
+      ClientHeight = 265
+      ClientWidth = 279
       object PanelDisplayCodecs: TPanel
         Left = 0
         Height = 72
@@ -471,7 +471,7 @@ object FormDialogFreeRDPOptions: TFormDialogFreeRDPOptions
     TabOrder = 2
     object EditConnectionName: TTIEdit
       Left = 47
-      Height = 25
+      Height = 27
       Top = 8
       Width = 234
       Anchors = [akTop, akLeft, akRight]
