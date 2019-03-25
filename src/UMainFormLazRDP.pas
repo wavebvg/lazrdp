@@ -24,7 +24,6 @@ uses
   UFreeRDPOptions,
   UFrameViewFreeRDP,
   UFreeRDP,
-  IniFiles,
   Types;
 
 type
@@ -159,9 +158,13 @@ var
       Rect(-VWBorder, -VHBorder, AWidth + VWBorder, AHeight + VHBorder);
   end;
 
+var
+  VWindow: PGtkWindow;
+
 begin
   if AValue = ApplicationMode then
     Exit;
+  VWindow := {%H-}PGtkWindow(Handle);
   VFrame := ActiveFrame;
   if not Assigned(VFrame) then
     Exit;
@@ -176,9 +179,9 @@ begin
     end;
     amHideDecoration:
     begin
-      gtk_window_set_decorated(PGtkWindow(Handle), True);
-      gtk_window_set_resizable(PGtkWindow(Handle), True);
-      gtk_widget_set_size_request(PGtkWidget(Handle), -1, -1);
+      gtk_window_set_decorated(VWindow, True);
+      gtk_window_set_resizable(VWindow, True);
+      gtk_widget_set_size_request(PGtkWidget(VWindow), -1, -1);
       Application.ProcessMessages;
       Width := FOldBoundsRect.Width;
       Height := FOldBoundsRect.Height;
@@ -208,9 +211,9 @@ begin
       PanelServers.Visible := False;
       SplitterChannels.Visible := False;
       Menu := nil;
-      gtk_window_set_resizable(PGtkWindow(Handle), False);
-      gtk_window_set_decorated(PGtkWindow(Handle), False);
-      gtk_widget_set_size_request(PGtkWidget(Handle), VFrame.FreeRDP.Width, VFrame.FreeRDP.Height);
+      gtk_window_set_resizable(VWindow, False);
+      gtk_window_set_decorated(VWindow, False);
+      gtk_widget_set_size_request(PGtkWidget(VWindow), VFrame.FreeRDP.Width, VFrame.FreeRDP.Height);
       SetNewPageControlSize(VFrame.FreeRDP.Width, VFrame.FreeRDP.Height);
     end;
   end;
@@ -240,6 +243,7 @@ begin
           MessageDlg('FreeRDP', VError.Message, mtError, [mbOK], 0);
           ReleaseKeyBoardFromForm(Self);
           VPage.Free;
+          UpdateCaption;
           Exit;
         end;
       end;

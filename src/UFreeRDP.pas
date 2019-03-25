@@ -50,7 +50,6 @@ type
     FOnXExit: TNotifyEvent;
     FXWindow: TWindow;
     FGrabbed: Boolean;
-    FFocusThread: TThread;
     FPressedKeys: TMapKeySymEvent;
     FWindowHack: TWinControl;
     FOutLines: TStrings;
@@ -73,23 +72,20 @@ type
     procedure DoXEnter;
     procedure DoXExit;
 
-    procedure UMGrab(var AMsg: TLMessage); message UM_GRAB;
-    procedure UMUngrab(var AMsg: TLMessage); message UM_UNGRAB;
+    procedure UMGrab(var {%H-}AMsg: TLMessage); message UM_GRAB;
+    procedure UMUngrab(var {%H-}AMsg: TLMessage); message UM_UNGRAB;
     procedure UMMap(var AMsg: TLMessage); message UM_MAP;
-    procedure UMUnmap(var AMsg: TLMessage); message UM_UNMAP;
+    procedure UMUnmap(var {%H-}AMsg: TLMessage); message UM_UNMAP;
     procedure BindKeyboardListener;
     procedure UnbindKeyboardListener;
     procedure UnGrabTimerTimer(Sender: TObject);
     procedure UpdateSmartSizing;
   protected
-    procedure CreateHandle; override;
-    procedure CreateWnd; override;
     procedure Resize; override;
     procedure DestroyHandle; override;
   public
     constructor Create(TheOwner: TComponent); override;
     destructor Destroy; override;
-    procedure SetFocus; override;
     property Active: Boolean read GetActive write SetActive;
   published
     property FreeRDPPath: String read FFreeRDPPath write FFreeRDPPath;
@@ -125,8 +121,7 @@ uses
   syncobjs,
   InterfaceBase,
   Gtk2WSControls,
-  WSLCLClasses,
-  Contnrs;
+  WSLCLClasses;
 
 const
   SecCommandValues: array[TFreeRDPSecOption] of String = (
@@ -154,20 +149,6 @@ const
     );
 
 type
-
-  { TFreeRDPFocusThread }
-
-  //TFreeRDPFocusThread = class(TThread)
-  //private
-  //  FStartEvent: TEvent;
-  //  FDisplay: PDisplay;
-  //  FControl: TWinControl;
-  //protected
-  //  procedure Execute; override;
-  //public
-  //  constructor Create(const AControl: TWinControl);
-  //  destructor Destroy; override;
-  //end;
 
   { TMapWindowHandle }
 
@@ -238,7 +219,7 @@ var
   VEvent: TXEvent;
 begin
   VScreen := gdk_screen_get_default();
-  FillChar(VEvent, SizeOf(VEvent), 0);
+  FillChar({%H-}VEvent, SizeOf(VEvent), 0);
   if AEvent^._type = GDK_KEY_PRESS then
     VEvent._type := KeyPress
   else
@@ -260,7 +241,7 @@ procedure SendClientMessage(const AHandle: TWindow; const AType: TClientMessageT
 var
   VEvent: TXEvent;
 begin
-  FillChar(VEvent, SizeOf(VEvent), 0);
+  FillChar({%H-}VEvent, SizeOf(VEvent), 0);
   VEvent.xclient._type := ClientMessage;
   VEvent.xclient.window := AHandle;
   VEvent.xclient.format := 32;
@@ -306,16 +287,16 @@ procedure TFreeRDPEvents.Unsubscribe(const AControl: TFreeRDP);
 begin
   FMapControlByOwnXWindow.Exclude(GetXWindow(AControl.Handle));
   FMapControlByFreeRDPXWindow.Remove(AControl.Handle);
-  SendClientMessage(FHandle, cmtUnSubscribe, AControl.Handle);
+  if not Application.Terminated then
+    SendClientMessage(FHandle, cmtUnSubscribe, AControl.Handle);
 end;
 
 procedure TFreeRDPEvents.Execute;
 var
   VEvent: TXEvent;
   VScreen: PGdkScreen;
-  VRoot: TWindow;
+  VRoot, VWindow: TWindow;
   VDisplay: PDisplay;
-  VWindow: PGdkWindow;
   VHandle: HWND;
 begin
   VDisplay := XOpenDisplay(nil);
@@ -328,7 +309,7 @@ begin
       FStartEvent.SetEvent;
       while not Terminated do
       begin
-        FillChar(VEvent, SizeOf(VEvent), 0);
+        FillChar({%H-}VEvent, SizeOf(VEvent), 0);
         XNextEvent(VDisplay, @VEvent);
         if not Terminated then
           case VEvent._type of
@@ -367,15 +348,13 @@ begin
             end;
             EnterNotify:
             begin
-              WriteLn('TFreeRDPEvents.Execute EnterNotify (window = ', VEvent.xcrossing.window,
-                ', subwindow = ', VEvent.xcrossing.subwindow, ')');
+              WriteLn('TFreeRDPEvents.Execute EnterNotify (window = ', VEvent.xcrossing.window, ')');
               VHandle := FMapControlByFreeRDPXWindow.Handles[VEvent.xmap.event];
               PostMessage(VHandle, UM_GRAB, 0, VEvent.xcrossing.window);
             end;
             LeaveNotify:
             begin
-              WriteLn('TFreeRDPEvents.Execute LeaveNotify (window = ', VEvent.xcrossing.window,
-                ', subwindow = ', VEvent.xcrossing.subwindow, ')');
+              WriteLn('TFreeRDPEvents.Execute LeaveNotify (window = ', VEvent.xcrossing.window, ')');
               VHandle := FMapControlByFreeRDPXWindow.Handles[VEvent.xmap.event];
               PostMessage(VHandle, UM_UNGRAB, 0, VEvent.xcrossing.window);
             end;
@@ -390,14 +369,14 @@ begin
                 cmtSubscribe:
                 begin
                   WriteLn('TFreeRDPEvents.Execute cmtSubscribe');
-                  XSelectInput(VDisplay, GetXWindow(VEvent.xclient.Data.l[1]), StructureNotifyMask or
-                    SubstructureNotifyMask);
+                  VWindow := GetXWindow(VEvent.xclient.Data.l[1]);
+                  XSelectInput(VDisplay, VWindow, StructureNotifyMask or SubstructureNotifyMask);
                 end;
                 cmtUnSubscribe:
                 begin
                   WriteLn('TFreeRDPEvents.Execute cmtUnSubscribe');
-                  if not Application.Terminated then
-                    XSelectInput(VDisplay, GetXWindow(VEvent.xclient.Data.l[1]), 0);
+                  VWindow := GetXWindow(VEvent.xclient.Data.l[1]);
+                  XSelectInput(VDisplay, VWindow, 0);
                 end;
               end;
             end;
@@ -457,7 +436,7 @@ end;
 
 class procedure TWSFreeRDP.DestroyHandle(const AWinControl: TWinControl);
 begin
-  FreeWidgetInfo(Pointer(AWinControl.Handle));
+  FreeWidgetInfo({%H-}Pointer(AWinControl.Handle));
   inherited DestroyHandle(AWinControl);
 end;
 
@@ -563,92 +542,7 @@ begin
   inherited Destroy;
 end;
 
-{ TFreeRDPFocusThread }
-
-//constructor TFreeRDPFocusThread.Create(const AControl: TWinControl);
-//begin
-//  inherited Create(True);
-//  FControl := AControl;
-//  FStartEvent := TSimpleEvent.Create;
-//  Start;
-//  FStartEvent.WaitFor(INFINITE);
-//end;
-
-//destructor TFreeRDPFocusThread.Destroy;
-//begin
-//  FStartEvent.Free;
-//  inherited Destroy;
-//end;
-
-//procedure TFreeRDPFocusThread.Execute;
-//var
-//  VEvent: TXEvent;
-//  VOrigWindow: TWindow;
-//  VMappedWindow: TWindow = 0;
-//begin
-//  VOrigWindow := GetXWindow(FControl.Handle);
-//  FDisplay := XOpenDisplay(nil);
-//  try
-//    XSelectInput(FDisplay, VOrigWindow, StructureNotifyMask or SubstructureNotifyMask);
-//    FillChar(VEvent, SizeOf(VEvent), 0);
-//    FStartEvent.SetEvent;
-//    while not Terminated do
-//    begin
-//      XNextEvent(FDisplay, @VEvent);
-//      if not G_IS_OBJECT(Pointer(FControl.Handle)) then
-//        Terminate;
-//      case VEvent._type of
-//        CreateNotify:
-//        begin
-//          WriteLn('CreateNotify (window = ', VEvent.xmap.window, ', event = ', VEvent.xmap.event, ')');
-//        end;
-//        DestroyNotify:
-//        begin
-//          WriteLn('DestroyNotify (window = ', VEvent.xmap.window, ', event = ', VEvent.xmap.event, ')');
-//          if VMappedWindow = VEvent.xmap.window then
-//          begin
-//            VMappedWindow := 0;
-//            Terminate;
-//          end;
-//        end;
-//        MapNotify:
-//        begin
-//          WriteLn('MapNotify (window = ', VEvent.xmap.window, ', event = ', VEvent.xmap.event, ')');
-//          if VMappedWindow = 0 then
-//          begin
-//            PostMessage(FControl.Handle, UM_MAP, VEvent.xmap.event, VEvent.xmap.window);
-//            XSelectInput(FDisplay, VEvent.xmap.window, EnterWindowMask or LeaveWindowMask);
-//            VMappedWindow := VEvent.xmap.window;
-//          end;
-//        end;
-//        UnmapNotify:
-//        begin
-//          WriteLn('UnmapNotify (window = ', VEvent.xmap.window, ', event = ', VEvent.xmap.event, ')');
-//          if VMappedWindow = VEvent.xmap.window then
-//          begin
-//            if G_IS_OBJECT(Pointer(FControl.Handle)) then
-//              PostMessage(FControl.Handle, UM_UNMAP, VEvent.xmap.event, VEvent.xmap.window);
-//          end;
-//        end;
-//        EnterNotify:
-//        begin
-//          WriteLn('EnterNotify (window = ', VEvent.xcrossing.window, ')');
-//          PostMessage(FControl.Handle, UM_GRAB, 0, VEvent.xcrossing.window);
-//        end;
-//        LeaveNotify:
-//        begin
-//          WriteLn('LeaveNotify (window = ', VEvent.xcrossing.window, ')');
-//          PostMessage(FControl.Handle, UM_UNGRAB, 0, VEvent.xcrossing.window);
-//        end;
-//      end;
-//    end;
-//  finally
-//    XCloseDisplay(FDisplay);
-//  end;
-//  WriteLn('Terminated');
-//end;
-
-function FreeRDPKeyboardEvent(Widget: PGtkWidget; Event: PGdkEvent; Data: gpointer): gboolean; cdecl;
+function FreeRDPKeyboardEvent({%H-}Widget: PGtkWidget; Event: PGdkEvent; Data: gpointer): gboolean; cdecl;
 begin
   TFreeRDP(Data).ProcessKeyEvent(Event);
   Result := True;
@@ -719,7 +613,7 @@ begin
   if FGrabbed then
   begin
     VScreen := gdk_screen_get_default();
-    FillChar(VEvent, SizeOf(VEvent), 0);
+    FillChar({%H-}VEvent, SizeOf(VEvent), 0);
     VEvent.xkey.root := GDK_WINDOW_XID(gdk_screen_get_root_window(VScreen));
     VEvent.xkey.subwindow := None;
     VEvent.xkey.time := AEvent^.key.time;
@@ -912,7 +806,6 @@ begin
     SetFocus;
     BindKeyboardListener;
     DoXEnter;
-    WriteLn(DateTimeToStr(Now, True), ' Enter');
   end;
 end;
 
@@ -930,7 +823,6 @@ begin
     ReleaseAllKeys;
     FGrabbed := False;
     DoXExit;
-    WriteLn(DateTimeToStr(Now, True), ' Exit');
   end;
 end;
 
@@ -940,25 +832,8 @@ begin
     XMoveResizeWindow(gdk_display, FXWindow, 0, 0, Width, Height);
 end;
 
-procedure TFreeRDP.SetFocus;
-begin
-  WriteLn('TFreeRDP.SetFocus');
-  inherited SetFocus;
-end;
-
-procedure TFreeRDP.CreateHandle;
-begin
-  inherited CreateHandle;
-end;
-
-procedure TFreeRDP.CreateWnd;
-begin
-  inherited CreateWnd;
-end;
-
 procedure TFreeRDP.DestroyHandle;
 begin
-  Stop;
   inherited DestroyHandle;
 end;
 
@@ -996,7 +871,7 @@ var
   VInstance: PGObject;
 begin
   UnbindKeyboardListener;
-  VInstance := G_OBJECT(PGtkWidget(Handle));
+  VInstance := G_OBJECT({%H-}PGtkWidget(Handle));
   FKeyPressEvent := g_signal_connect(VInstance, 'key-press-event', G_CALLBACK(@FreeRDPKeyboardEvent), Self);
   FKeyReleaseEvent := g_signal_connect(VInstance, 'key-release-event', G_CALLBACK(@FreeRDPKeyboardEvent), Self);
 end;
@@ -1005,7 +880,7 @@ procedure TFreeRDP.UnbindKeyboardListener;
 var
   VInstance: gpointer;
 begin
-  VInstance := G_OBJECT(PGtkWidget(Handle));
+  VInstance := G_OBJECT({%H-}PGtkWidget(Handle));
   if FKeyPressEvent <> 0 then
   begin
     g_signal_handler_disconnect(VInstance, FKeyPressEvent);
