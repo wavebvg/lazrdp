@@ -280,7 +280,7 @@ end;
 procedure TFreeRDPEvents.Subscribe(const AControl: TFreeRDP);
 begin
   FMapControlByOwnXWindow.Include(GetXWindow(AControl.Handle), AControl.Handle);
-  SendClientMessage(FHandle, cmtSubscribe, AControl.Handle);
+  SendClientMessage(FHandle, cmtSubscribe, GetXWindow(AControl.Handle));
 end;
 
 procedure TFreeRDPEvents.Unsubscribe(const AControl: TFreeRDP);
@@ -288,7 +288,7 @@ begin
   FMapControlByOwnXWindow.Exclude(GetXWindow(AControl.Handle));
   FMapControlByFreeRDPXWindow.Remove(AControl.Handle);
   if not Application.Terminated then
-    SendClientMessage(FHandle, cmtUnSubscribe, AControl.Handle);
+    SendClientMessage(FHandle, cmtUnSubscribe, GetXWindow(AControl.Handle));
 end;
 
 procedure TFreeRDPEvents.Execute;
@@ -369,13 +369,13 @@ begin
                 cmtSubscribe:
                 begin
                   WriteLn('TFreeRDPEvents.Execute cmtSubscribe');
-                  VWindow := GetXWindow(VEvent.xclient.Data.l[1]);
+                  VWindow := VEvent.xclient.Data.l[1];
                   XSelectInput(VDisplay, VWindow, StructureNotifyMask or SubstructureNotifyMask);
                 end;
                 cmtUnSubscribe:
                 begin
                   WriteLn('TFreeRDPEvents.Execute cmtUnSubscribe');
-                  VWindow := GetXWindow(VEvent.xclient.Data.l[1]);
+                  VWindow := VEvent.xclient.Data.l[1];
                   XSelectInput(VDisplay, VWindow, 0);
                 end;
               end;
@@ -393,7 +393,7 @@ end;
 
 class function TWSFreeRDP.CreateHandle(const AWinControl: TWinControl; const AParams: TCreateParams): HWND;
 var
-  NewWidget: PGtkWidget;
+  VNewWidget: PGtkWidget;
   WidgetInfo: PWidgetInfo;
   Allocation: TGTKAllocation;
 begin
@@ -401,12 +401,12 @@ begin
     Result := inherited CreateHandle(AWinControl, AParams)
   else
   begin
-    NewWidget := gtk_event_box_new;
+    VNewWidget := gtk_event_box_new;
+    g_object_ref(VNewWidget);
+    gtk_widget_set_events(VNewWidget, GDK_ALL_EVENTS_MASK);
+    GTK_WIDGET_SET_FLAGS(VNewWidget, GTK_CAN_FOCUS);
 
-    gtk_widget_set_events(NewWidget, GDK_ALL_EVENTS_MASK);
-    GTK_WIDGET_SET_FLAGS(NewWidget, GTK_CAN_FOCUS);
-
-    WidgetInfo := GetWidgetInfo(NewWidget, True);
+    WidgetInfo := GetWidgetInfo(VNewWidget, True);
     WidgetInfo^.LCLObject := AWinControl;
     WidgetInfo^.Style := AParams.Style;
     WidgetInfo^.ExStyle := AParams.ExStyle;
@@ -417,26 +417,30 @@ begin
     Allocation.Y := AParams.Y;
     Allocation.Width := AParams.Width;
     Allocation.Height := AParams.Height;
-    gtk_widget_size_allocate(NewWidget, @Allocation);
+    gtk_widget_size_allocate(VNewWidget, @Allocation);
 
     if csDesigning in AWinControl.ComponentState then
     begin
       // at designtime setup normal handlers
-      TGtk2WidgetSet(WidgetSet).FinishCreateHandle(AWinControl, NewWidget, AParams);
+      TGtk2WidgetSet(WidgetSet).FinishCreateHandle(AWinControl, VNewWidget, AParams);
     end
     else
     begin
       // at runtime
-      g_signal_connect(GPointer(NewWidget), 'destroy',
+      g_signal_connect(GPointer(VNewWidget), 'destroy',
         TGTKSignalFunc(@FreeRDPWidgetDestroy), WidgetInfo);
     end;
-    Result := HWND({%H-}PtrUInt(Pointer(NewWidget)));
+    Result := HWND({%H-}PtrUInt(Pointer(VNewWidget)));
   end;
 end;
 
 class procedure TWSFreeRDP.DestroyHandle(const AWinControl: TWinControl);
+var
+  VWidget: PGtkWidget;
 begin
-  FreeWidgetInfo({%H-}Pointer(AWinControl.Handle));
+  VWidget := {%H-}PGtkWidget(AWinControl.Handle);
+  FreeWidgetInfo(VWidget);
+  g_object_unref(VWidget);
   inherited DestroyHandle(AWinControl);
 end;
 
@@ -798,6 +802,7 @@ end;
 
 procedure TFreeRDP.UMGrab(var AMsg: TLMessage);
 begin
+  WriteLn('UMGrab');
   FUnGrabTimer.Enabled := False;
   if Application.Active and not FGrabbed then
   begin
