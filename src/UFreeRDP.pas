@@ -279,6 +279,7 @@ end;
 
 procedure TFreeRDPEvents.Subscribe(const AControl: TFreeRDP);
 begin
+  g_object_ref(PGtkWidget(AControl.Handle));
   FMapControlByOwnXWindow.Include(GetXWindow(AControl.Handle), AControl.Handle);
   SendClientMessage(FHandle, cmtSubscribe, GetXWindow(AControl.Handle));
 end;
@@ -289,6 +290,7 @@ begin
   FMapControlByFreeRDPXWindow.Remove(AControl.Handle);
   if not Application.Terminated then
     SendClientMessage(FHandle, cmtUnSubscribe, GetXWindow(AControl.Handle));
+  g_object_unref(PGtkWidget(AControl.Handle));
 end;
 
 procedure TFreeRDPEvents.Execute;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
-  <ProjectOptions BuildModesCount="3">
+  <ProjectOptions>
     <Version Value="12"/>
     <General>
       <SessionStorage Value="InProjectDir"/>
@@ -19,8 +19,8 @@
       <Attributes pvaDebug="True"/>
     </VersionInfo>
     <BuildModes>
-      <Item1 Name="default" Default="True"/>
-      <Item2 Name="Debug">
+      <Item Name="default" Default="True"/>
+      <Item Name="Debug">
         <CompilerOptions>
           <Version Value="11"/>
           <Target>
@@ -58,8 +58,8 @@
             </Options>
           </Linking>
         </CompilerOptions>
-      </Item2>
-      <Item3 Name="Release">
+      </Item>
+      <Item Name="Release">
         <CompilerOptions>
           <Version Value="11"/>
           <Target>
@@ -87,7 +87,7 @@
             </Options>
           </Linking>
         </CompilerOptions>
-      </Item3>
+      </Item>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -108,62 +108,62 @@
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="10">
-      <Unit0>
+    <Units>
+      <Unit>
         <Filename Value="lazrdp.lpr"/>
         <IsPartOfProject Value="True"/>
-      </Unit0>
-      <Unit1>
+      </Unit>
+      <Unit>
         <Filename Value="UMainFormLazRDP.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="MainFormLazRDP"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit1>
-      <Unit2>
+      </Unit>
+      <Unit>
         <Filename Value="UFreeRDP.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit2>
-      <Unit3>
+      </Unit>
+      <Unit>
         <Filename Value="UFormDialogFreeRDPOptions.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FormDialogFreeRDPOptions"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit3>
-      <Unit4>
+      </Unit>
+      <Unit>
         <Filename Value="UFreeRDPOptions.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit4>
-      <Unit5>
+      </Unit>
+      <Unit>
         <Filename Value="UDialogFreeRDPOptions.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit5>
-      <Unit6>
+      </Unit>
+      <Unit>
         <Filename Value="UDMFreeRDP.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="DMFreeRDP"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-      </Unit6>
-      <Unit7>
+      </Unit>
+      <Unit>
         <Filename Value="UFormDialogFreeRDPPreferences.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FormDialogFreeRDPPreferences"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit7>
-      <Unit8>
+      </Unit>
+      <Unit>
         <Filename Value="UDialogFreeRDPPreferences.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit8>
-      <Unit9>
+      </Unit>
+      <Unit>
         <Filename Value="UFrameViewFreeRDP.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FrameViewFreeRDP"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
-      </Unit9>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

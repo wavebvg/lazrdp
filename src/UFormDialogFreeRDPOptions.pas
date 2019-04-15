@@ -132,6 +132,7 @@ begin
   CreateEnumAliasValues(TypeInfo(TFreeRDPCodecCashOption), ComboBoxCodecCash.Link.AliasValues, CodecCashAliases);
   CreateEnumAliasValues(TypeInfo(TFreeRDPRFXModeOption), ComboBoxRFXMode.Link.AliasValues, RFXModeAliases);
   FOptions := TFreeRDPConnectionOptions.Create;
+  PropertyLinkMain.TIObject := Options;
 end;
 
 destructor TFormDialogFreeRDPOptions.Destroy;
