@@ -152,18 +152,18 @@ type
 
   { TMapWindowHandle }
 
-  TMapWindowHandle = class(specialize TFPGMap<TWindow, HWND>)
+  TMapWindowHandle = class(specialize TFPGMap<TWindow, TFreeRDP>)
   private
     FLock: TCriticalSection;
-    function GetHandle(const AWindow: TWindow): HWND;
+    function GetHandle(const AWindow: TWindow): TFreeRDP;
   public
     constructor Create;
     destructor Destroy; override;
 
-    procedure Include(const AWindow: TWindow; const AHandle: HWND);
+    procedure Include(const AWindow: TWindow; const AHandle: TFreeRDP);
     procedure Exclude(const AWindow: TWindow);
-    procedure Remove(const AHandle: HWND);
-    property Handles[const AWindow: TWindow]: HWND read GetHandle;
+    procedure Remove(const AControl: TFreeRDP);
+    property Handles[const AWindow: TWindow]: TFreeRDP read GetHandle;
   end;
 
   { TFreeRDPEvents }
@@ -203,12 +203,12 @@ begin
   Result := True;
 end;
 
-function GetXWindow(const AHandle: HWND): TWindow;
+function GetXWindow(const AHandle: TWinControl): TWindow;
 var
   VWidget: PGtkWidget;
   VWindow: PGdkWindow;
 begin
-  VWidget := {%H-}PGtkWidget(AHandle);
+  VWidget := {%H-}PGtkWidget(AHandle.Handle);
   VWindow := VWidget^.window;
   Result := GDK_WINDOW_XWINDOW(VWindow);
 end;
@@ -279,18 +279,19 @@ end;
 
 procedure TFreeRDPEvents.Subscribe(const AControl: TFreeRDP);
 begin
-  g_object_ref(PGtkWidget(AControl.Handle));
-  FMapControlByOwnXWindow.Include(GetXWindow(AControl.Handle), AControl.Handle);
-  SendClientMessage(FHandle, cmtSubscribe, GetXWindow(AControl.Handle));
+  FMapControlByOwnXWindow.Include(GetXWindow(AControl), AControl);
+  WriteLn('MapControlByOwnXWindow.Count = ', FMapControlByOwnXWindow.Count);
+  SendClientMessage(FHandle, cmtSubscribe, GetXWindow(AControl));
 end;
 
 procedure TFreeRDPEvents.Unsubscribe(const AControl: TFreeRDP);
 begin
-  FMapControlByOwnXWindow.Exclude(GetXWindow(AControl.Handle));
-  FMapControlByFreeRDPXWindow.Remove(AControl.Handle);
+  FMapControlByOwnXWindow.Exclude(GetXWindow(AControl));
+  WriteLn('MapControlByOwnXWindow.Count = ', FMapControlByOwnXWindow.Count);
+  FMapControlByFreeRDPXWindow.Remove(AControl);
+  WriteLn('MapControlByFreeRDPXWindow.Count = ', FMapControlByFreeRDPXWindow.Count);
   if not Application.Terminated then
-    SendClientMessage(FHandle, cmtUnSubscribe, GetXWindow(AControl.Handle));
-  g_object_unref(PGtkWidget(AControl.Handle));
+    SendClientMessage(FHandle, cmtUnSubscribe, GetXWindow(AControl));
 end;
 
 procedure TFreeRDPEvents.Execute;
@@ -299,7 +300,7 @@ var
   VScreen: PGdkScreen;
   VRoot, VWindow: TWindow;
   VDisplay: PDisplay;
-  VHandle: HWND;
+  VControl: TFreeRDP;
 begin
   VDisplay := XOpenDisplay(nil);
   try
@@ -331,9 +332,10 @@ begin
                 ', event = ', VEvent.xmap.event, ')');
               if VEvent.xmap.event <> VEvent.xmap.window then
               begin
-                VHandle := FMapControlByOwnXWindow.Handles[VEvent.xmap.event];
-                PostMessage(VHandle, UM_MAP, VEvent.xmap.event, VEvent.xmap.window);
-                FMapControlByFreeRDPXWindow.Include(VEvent.xmap.window, VHandle);
+                VControl := FMapControlByOwnXWindow.Handles[VEvent.xmap.event];
+                PostMessage(VControl.Handle, UM_MAP, VEvent.xmap.event, VEvent.xmap.window);
+                FMapControlByFreeRDPXWindow.Include(VEvent.xmap.window, VControl);
+                WriteLn('MapControlByFreeRDPXWindow.Count = ', FMapControlByFreeRDPXWindow.Count);
                 XSelectInput(VDisplay, VEvent.xmap.window, EnterWindowMask or LeaveWindowMask);
               end;
             end;
@@ -343,22 +345,25 @@ begin
                 ', event = ', VEvent.xmap.event, ')');
               if VEvent.xmap.event <> VEvent.xmap.window then
               begin
-                VHandle := FMapControlByOwnXWindow.Handles[VEvent.xmap.event];
-                PostMessage(VHandle, UM_UNMAP, VEvent.xmap.event, VEvent.xmap.window);
+                VControl := FMapControlByOwnXWindow.Handles[VEvent.xmap.event];
+                PostMessage(VControl.Handle, UM_UNMAP, VEvent.xmap.event, VEvent.xmap.window);
                 FMapControlByFreeRDPXWindow.Exclude(VEvent.xmap.window);
+                WriteLn('MapControlByFreeRDPXWindow.Count = ', FMapControlByFreeRDPXWindow.Count);
               end;
             end;
             EnterNotify:
             begin
-              WriteLn('TFreeRDPEvents.Execute EnterNotify (window = ', VEvent.xcrossing.window, ')');
-              VHandle := FMapControlByFreeRDPXWindow.Handles[VEvent.xmap.event];
-              PostMessage(VHandle, UM_GRAB, 0, VEvent.xcrossing.window);
+              VControl := FMapControlByFreeRDPXWindow.Handles[VEvent.xmap.event];
+              PostMessage(VControl.Handle, UM_GRAB, 0, VEvent.xcrossing.window);
+              WriteLn('TFreeRDPEvents.Execute EnterNotify (window = ', VEvent.xcrossing.window, ', handle = ',
+                VControl.Handle, ')');
             end;
             LeaveNotify:
             begin
-              WriteLn('TFreeRDPEvents.Execute LeaveNotify (window = ', VEvent.xcrossing.window, ')');
-              VHandle := FMapControlByFreeRDPXWindow.Handles[VEvent.xmap.event];
-              PostMessage(VHandle, UM_UNGRAB, 0, VEvent.xcrossing.window);
+              VControl := FMapControlByFreeRDPXWindow.Handles[VEvent.xmap.event];
+              PostMessage(VControl.Handle, UM_UNGRAB, 0, VEvent.xcrossing.window);
+              WriteLn('TFreeRDPEvents.Execute LeaveNotify (window = ', VEvent.xcrossing.window, ', handle = ',
+                VControl.Handle, ')');
             end;
             ClientMessage:
             begin
@@ -404,7 +409,6 @@ begin
   else
   begin
     VNewWidget := gtk_event_box_new;
-    g_object_ref(VNewWidget);
     gtk_widget_set_events(VNewWidget, GDK_ALL_EVENTS_MASK);
     GTK_WIDGET_SET_FLAGS(VNewWidget, GTK_CAN_FOCUS);
 
@@ -442,7 +446,6 @@ var
 begin
   VWidget := {%H-}PGtkWidget(AWinControl.Handle);
   FreeWidgetInfo(VWidget);
-  g_object_unref(VWidget);
   inherited DestroyHandle(AWinControl);
 end;
 
@@ -486,7 +489,7 @@ begin
   inherited Destroy;
 end;
 
-function TMapWindowHandle.GetHandle(const AWindow: TWindow): HWND;
+function TMapWindowHandle.GetHandle(const AWindow: TWindow): TFreeRDP;
 begin
   FLock.Enter;
   try
@@ -496,7 +499,7 @@ begin
   end;
 end;
 
-procedure TMapWindowHandle.Include(const AWindow: TWindow; const AHandle: HWND);
+procedure TMapWindowHandle.Include(const AWindow: TWindow; const AHandle: TFreeRDP);
 begin
   FLock.Enter;
   try
@@ -507,22 +510,26 @@ begin
 end;
 
 procedure TMapWindowHandle.Exclude(const AWindow: TWindow);
-begin
-  FLock.Enter;
-  try
-    Remove(AWindow);
-  finally
-    FLock.Leave;
-  end;
-end;
-
-procedure TMapWindowHandle.Remove(const AHandle: HWND);
 var
   VIndex: Integer;
 begin
   FLock.Enter;
   try
-    VIndex := IndexOf(AHandle);
+    VIndex := IndexOf(AWindow);
+    if VIndex >= 0 then
+      Delete(VIndex);
+  finally
+    FLock.Leave;
+  end;
+end;
+
+procedure TMapWindowHandle.Remove(const AControl: TFreeRDP);
+var
+  VIndex: Integer;
+begin
+  FLock.Enter;
+  try
+    VIndex := IndexOfData(AControl);
     if VIndex >= 0 then
       Delete(VIndex);
   finally
@@ -744,7 +751,7 @@ begin
   if not Options.Clipboard then
     AddParam('-clipboard', []);
   AddParam('-grab-keyboard', []);
-  AddParam('/parent-window:%d', [GetXWindow(Handle)]);
+  AddParam('/parent-window:%d', [GetXWindow(Self)]);
   Events.Subscribe(Self);
   FProcess.Execute;
   ParseOutputResult;
@@ -841,6 +848,7 @@ end;
 
 procedure TFreeRDP.DestroyHandle;
 begin
+  Stop;
   inherited DestroyHandle;
 end;
 

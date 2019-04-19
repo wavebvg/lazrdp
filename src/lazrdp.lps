@@ -7,7 +7,7 @@
       <Unit>
         <Filename Value="lazrdp.lpr"/>
         <IsPartOfProject Value="True"/>
-        <CursorPos Y="26"/>
+        <CursorPos X="38" Y="19"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
@@ -18,7 +18,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="7" Y="279"/>
+        <TopLine Value="265"/>
+        <CursorPos X="14" Y="267"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -28,8 +29,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="386"/>
-        <CursorPos Y="404"/>
+        <TopLine Value="260"/>
+        <CursorPos X="5" Y="278"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
@@ -39,7 +40,7 @@
         <ComponentName Value="FormDialogFreeRDPOptions"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="180"/>
         <CursorPos X="33" Y="187"/>
         <UsageCount Value="200"/>
@@ -57,7 +58,7 @@
       <Unit>
         <Filename Value="UDialogFreeRDPOptions.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="52"/>
         <CursorPos X="23" Y="69"/>
         <UsageCount Value="201"/>
@@ -69,7 +70,7 @@
         <ComponentName Value="DMFreeRDP"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="25"/>
         <CursorPos X="27" Y="34"/>
         <UsageCount Value="200"/>
@@ -85,7 +86,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="33"/>
         <CursorPos X="10" Y="36"/>
-        <UsageCount Value="95"/>
+        <UsageCount Value="97"/>
       </Unit>
       <Unit>
         <Filename Value="UDialogFreeRDPPreferences.pas"/>
@@ -93,7 +94,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="45"/>
         <CursorPos X="34" Y="53"/>
-        <UsageCount Value="95"/>
+        <UsageCount Value="97"/>
       </Unit>
       <Unit>
         <Filename Value="UFrameViewFreeRDP.pas"/>
@@ -104,7 +105,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="74"/>
         <CursorPos X="4" Y="106"/>
-        <UsageCount Value="94"/>
+        <UsageCount Value="96"/>
       </Unit>
       <Unit>
         <Filename Value="lib/snowball/src/SnowLibrary.pas"/>
@@ -1268,9 +1269,9 @@
       <Unit>
         <Filename Value="../../../../fpc/src/rtl/objpas/classes/classesh.inc"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1961"/>
-        <CursorPos X="14" Y="1976"/>
-        <UsageCount Value="9"/>
+        <TopLine Value="1871"/>
+        <CursorPos X="14" Y="1882"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="../../../../fpc/lazarus/lcl/include/popupmenu.inc"/>
@@ -1316,10 +1317,11 @@
       <Unit>
         <Filename Value="../../../../fpc/lazarus/lcl/controls.pp"/>
         <UnitName Value="Controls"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="2193"/>
-        <CursorPos X="25" Y="2209"/>
-        <UsageCount Value="9"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="281"/>
+        <CursorPos X="23" Y="295"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="../../../../fpc/lazarus/lcl/include/wincontrol.inc"/>
@@ -1364,10 +1366,11 @@
       </Unit>
       <Unit>
         <Filename Value="../../../../fpc/src/rtl/objpas/fgl.pp"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="1619"/>
-        <CursorPos X="20" Y="1621"/>
-        <UsageCount Value="10"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="278"/>
+        <CursorPos X="11" Y="291"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="../../../../fpc/src/packages/fcl-base/src/syncobjs.pp"/>
@@ -1404,116 +1407,201 @@
         <CursorPos Y="3812"/>
         <UsageCount Value="10"/>
       </Unit>
+      <Unit>
+        <Filename Value="../../../../fpc/3.3.1/src/packages/gtk2/src/glib/gmain.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="81"/>
+        <CursorPos X="51" Y="94"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../../fpc/lazarus/lcl/interfaces/gtk2/gtk2msgqueue.pp"/>
+        <UnitName Value="Gtk2MsgQueue"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="146"/>
+        <CursorPos X="24" Y="148"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../../fpc/lazarus/lcl/interfaces/gtk3/gtk3object.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="460"/>
+        <CursorPos X="6" Y="473"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../../fpc/src/packages/gtk2/src/glib/gmain.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="82"/>
+        <CursorPos X="10" Y="83"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../../fpc/lazarus/lcl/interfaces/gtk3/gtk3bindings/lazglib2.pas"/>
+        <UnitName Value="LazGLib2"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2049"/>
+        <CursorPos X="3" Y="2062"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../../fpc/lazarus/lcl/interfaces/gtk2/gtk2widgetset.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1592"/>
+        <CursorPos Y="1605"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../../fpc/lazarus/lcl/interfaces/gtk2/gtk2int.pas"/>
+        <UnitName Value="Gtk2Int"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="52"/>
+        <CursorPos X="17" Y="56"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../../fpc/lazarus/lcl/include/winapi.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="755"/>
+        <CursorPos Y="770"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../../fpc/lazarus/lcl/interfaces/gtk2/gtk2winapi.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7087"/>
+        <CursorPos X="21" Y="7093"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../../fpc/src/rtl/inc/threadh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="144"/>
+        <CursorPos X="31" Y="158"/>
+        <UsageCount Value="10"/>
+      </Unit>
     </Units>
-    <JumpHistory Count="27" HistoryIndex="26">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="UFormDialogFreeRDPOptions.pas"/>
-        <Caret Line="194" Column="19" TopLine="184"/>
+        <Filename Value="UFreeRDP.pas"/>
+        <Caret Line="283" Column="38" TopLine="266"/>
       </Position1>
       <Position2>
-        <Filename Value="UFormDialogFreeRDPOptions.pas"/>
-        <Caret Line="58" Column="21" TopLine="46"/>
+        <Filename Value="UFreeRDP.pas"/>
+        <Caret Line="290" Column="30" TopLine="265"/>
       </Position2>
       <Position3>
-        <Filename Value="UFormDialogFreeRDPOptions.pas"/>
-        <Caret Line="194" Column="19" TopLine="172"/>
+        <Filename Value="UFreeRDP.pas"/>
+        <Caret Line="336" Column="99" TopLine="313"/>
       </Position3>
       <Position4>
-        <Filename Value="UFormDialogFreeRDPOptions.pas"/>
-        <Caret Line="58" Column="21" TopLine="46"/>
+        <Filename Value="UFreeRDP.pas"/>
+        <Caret Line="349" Column="99" TopLine="320"/>
       </Position4>
       <Position5>
-        <Filename Value="UFormDialogFreeRDPOptions.pas"/>
-        <Caret Line="135" Column="40" TopLine="121"/>
+        <Filename Value="UFreeRDP.pas"/>
+        <Caret Line="354" Column="54" TopLine="326"/>
       </Position5>
       <Position6>
-        <Filename Value="UFormDialogFreeRDPOptions.pas"/>
-        <Caret Line="197" TopLine="180"/>
+        <Filename Value="UFreeRDP.pas"/>
+        <Caret Line="361" Column="54" TopLine="333"/>
       </Position6>
       <Position7>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="903" Column="27" TopLine="884"/>
+        <Caret Line="175" Column="57" TopLine="157"/>
       </Position7>
       <Position8>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="906" Column="9" TopLine="884"/>
+        <Caret Line="260" Column="30" TopLine="231"/>
       </Position8>
       <Position9>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="907" Column="9" TopLine="884"/>
+        <Caret Line="269" Column="30" TopLine="240"/>
       </Position9>
       <Position10>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="908" Column="9" TopLine="884"/>
+        <Caret Line="290" Column="77" TopLine="267"/>
       </Position10>
       <Position11>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="169" Column="19" TopLine="156"/>
+        <Caret Line="291" Column="30" TopLine="267"/>
       </Position11>
       <Position12>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="171" Column="17" TopLine="156"/>
+        <Caret Line="292" Column="77" TopLine="267"/>
       </Position12>
       <Position13>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="198" Column="25" TopLine="191"/>
+        <Caret Line="337" Column="44" TopLine="309"/>
       </Position13>
       <Position14>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="254" Column="17" TopLine="247"/>
+        <Caret Line="338" Column="91" TopLine="310"/>
       </Position14>
       <Position15>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="256" Column="27" TopLine="247"/>
+        <Caret Line="350" Column="44" TopLine="322"/>
       </Position15>
       <Position16>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="266" Column="26" TopLine="247"/>
+        <Caret Line="351" Column="91" TopLine="323"/>
       </Position16>
       <Position17>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="274" Column="25" TopLine="252"/>
+        <Caret Line="356" Column="54" TopLine="328"/>
       </Position17>
       <Position18>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="280" Column="25" TopLine="258"/>
+        <Caret Line="363" Column="54" TopLine="335"/>
       </Position18>
       <Position19>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="286" Column="25" TopLine="264"/>
+        <Caret Line="175" Column="57" TopLine="157"/>
       </Position19>
       <Position20>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="294" Column="25" TopLine="272"/>
+        <Caret Line="260" Column="30" TopLine="231"/>
       </Position20>
       <Position21>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="318" Column="38" TopLine="297"/>
+        <Caret Line="269" Column="30" TopLine="240"/>
       </Position21>
       <Position22>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="323" Column="38" TopLine="302"/>
+        <Caret Line="289" Column="26" TopLine="262"/>
       </Position22>
       <Position23>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="328" Column="38" TopLine="307"/>
+        <Caret Line="290" Column="69" TopLine="262"/>
       </Position23>
       <Position24>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="340" Column="38" TopLine="319"/>
+        <Caret Line="335" Column="52" TopLine="307"/>
       </Position24>
       <Position25>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="339" Column="18" TopLine="330"/>
+        <Caret Line="348" Column="52" TopLine="320"/>
       </Position25>
       <Position26>
-        <Filename Value="UDialogFreeRDPOptions.pas"/>
-        <Caret Line="69" Column="23" TopLine="52"/>
+        <Filename Value="UFreeRDP.pas"/>
+        <Caret Line="175" Column="28" TopLine="157"/>
       </Position26>
       <Position27>
         <Filename Value="UFreeRDP.pas"/>
-        <Caret Line="400" TopLine="386"/>
+        <Caret Line="259" Column="26" TopLine="230"/>
       </Position27>
+      <Position28>
+        <Filename Value="UFreeRDP.pas"/>
+        <Caret Line="268" Column="26" TopLine="239"/>
+      </Position28>
+      <Position29>
+        <Filename Value="UFreeRDP.pas"/>
+        <Caret Line="282" Column="26" TopLine="253"/>
+      </Position29>
+      <Position30>
+        <Filename Value="UFreeRDP.pas"/>
+        <Caret Line="283" Column="69" TopLine="254"/>
+      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
